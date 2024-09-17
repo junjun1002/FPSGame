@@ -7,18 +7,16 @@ namespace FPS
 {
     public class PlayerController : MonoBehaviour
     {
-        /// <summary>
-        /// プレイヤーの移動速度
-        /// </summary>
+        /// <summary>プレイヤーの移動速度</summary>
         [SerializeField] float m_moveSpeed = 5.0f;
-        /// <summary>
-        /// プレイヤーのカメラ
-        /// </summary>
+        /// <summary>プレイヤーの歩行速度</summary>
+        [SerializeField] float m_walkSpeed = 2.0f;
+        /// <summary>プレイヤーの最大速度</summary>
+        [SerializeField] float m_maxSpeed = 10.0f;
+        /// <summary>プレイヤーのカメラ</summary>
         [SerializeField] GameObject m_camera;
 
-        /// <summary>
-        /// マウスの感度を調整するための係数
-        /// </summary>
+        /// <summary>マウスの感度を調整するための係数</summary>
         [SerializeField] float m_sensitivity = 0.1f;
 
         private PlayerInput m_playerInput;
@@ -26,6 +24,9 @@ namespace FPS
 
         private float m_horizontal;
         private float m_vertical;
+
+        /// <summary>プレイヤーが歩いているかどうか</summary>
+        private bool m_isWalking = false;
 
         private void Awake()
         {
@@ -48,12 +49,19 @@ namespace FPS
         {
             Vector3 dir = (this.transform.forward * m_vertical + this.transform.right * m_horizontal).normalized;
 
-            // 入力があれば、そちらの方向に動かす
+            // 入力があれば、プレイヤーの向いている向きを基準に入力方向に動かす
             if (dir != Vector3.zero)
             {
-                //this.transform.forward = dir;
                 m_rb.AddForce(dir * m_moveSpeed);
-                //m_rb.velocity = this.transform.forward * m_moveSpeed;
+            }
+
+            if (m_isWalking)
+            {
+                m_rb.velocity = m_rb.velocity.normalized * m_walkSpeed;
+            }
+            else if (m_rb.velocity.magnitude > m_maxSpeed)
+            {
+                m_rb.velocity = m_rb.velocity.normalized * m_maxSpeed;
             }
         }
 
@@ -67,6 +75,24 @@ namespace FPS
             m_horizontal = move.x;
             m_vertical = move.y;
             Debug.Log("Move: " + move);
+        }
+
+        /// <summary>
+        /// プレイヤーの歩行を制御する
+        /// </summary>
+        /// <param name="context"></param>
+        public void OnWalk(InputAction.CallbackContext context)
+        {
+            if (context.started)
+            {
+                m_isWalking = true;
+                Debug.Log("Walk started");
+            }
+            else if (context.canceled)
+            {
+                m_isWalking = false;
+                Debug.Log("Walk canceled");
+            }
         }
 
         /// <summary>
