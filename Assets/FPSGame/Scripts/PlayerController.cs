@@ -14,6 +14,14 @@ namespace FPS
         /// <summary>プレイヤーの最大速度</summary>
         [SerializeField] float m_maxSpeed = 10.0f;
 
+        /// <summary>
+        /// カメラの垂直方向の回転角度の制限
+        /// </summary>
+        [SerializeField] float m_minPitch = -45.0f;
+        [SerializeField] float m_maxPitch = 45.0f;
+
+        private float m_currentPitch = 0.0f;
+
         /// <summary>プレイヤーのジャンプ力</summary>
         [SerializeField] float m_jumpForce = 5.0f;
 
@@ -146,8 +154,12 @@ namespace FPS
 
             // プレイヤーの回転を適用
             this.transform.Rotate(Vector3.up, yaw, Space.World);
-            // 縦軸方向の回転はカメラだけに適用
-            m_camera.transform.Rotate(Vector3.right, pitch, Space.Self);
+
+            // 現在のピッチ角度を更新
+            m_currentPitch = Mathf.Clamp(m_currentPitch + pitch, m_minPitch, m_maxPitch);
+
+            // カメラのピッチ角度を適用
+            m_camera.transform.localEulerAngles = new Vector3(m_currentPitch, 0.0f, 0.0f);
 
             Debug.Log("Look: " + look);
         }
