@@ -46,7 +46,7 @@ namespace FPS
 
         private void Update()
         {
-            Vector3 dir = (Vector3.forward * m_vertical + Vector3.right * m_horizontal).normalized;
+            Vector3 dir = (this.transform.forward * m_vertical + this.transform.right * m_horizontal).normalized;
 
             // “ü—Í‚ª‚ ‚ê‚ÎA‚»‚¿‚ç‚Ì•ûŒü‚É“®‚©‚·
             if (dir != Vector3.zero)
