@@ -19,6 +19,8 @@ namespace FPS
 
         /// <summary>プレイヤーのカメラ</summary>
         [SerializeField] GameObject m_camera;
+        /// <summary>キャラクターのアニメーション</summary>
+        [SerializeField] Animator m_anim;
 
         /// <summary>マウスの感度を調整するための係数</summary>
         [SerializeField] float m_sensitivity = 0.1f;
@@ -159,6 +161,18 @@ namespace FPS
                 m_isGround = false;
             }
             Debug.Log("Jump");
+        }
+
+        public void OnCrouching(InputAction.CallbackContext context)
+        {
+            if (context.started)
+            {
+                m_anim.SetBool("isCrouching", true);
+            }
+            else if (context.canceled)
+            {
+                m_anim.SetBool("isCrouching", false);
+            }
         }
     }
 }
