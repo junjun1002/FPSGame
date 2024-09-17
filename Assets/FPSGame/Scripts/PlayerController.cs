@@ -2,13 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 namespace FPS
 {
     public class PlayerController : MonoBehaviour
     {
-        [SerializeField] private float m_moveSpeed = 5.0f;
+        /// <summary>
+        /// プレイヤーの移動速度
+        /// </summary>
+        [SerializeField] float m_moveSpeed = 5.0f;
+        /// <summary>
+        /// プレイヤーのカメラ
+        /// </summary>
+        [SerializeField] GameObject m_camera;
+
+        /// <summary>
+        /// マウスの感度を調整するための係数
+        /// </summary>
+        [SerializeField] float m_sensitivity = 0.1f;
 
         private PlayerInput m_playerInput;
         private Rigidbody m_rb;
@@ -46,6 +57,10 @@ namespace FPS
             }
         }
 
+        /// <summary>
+        /// プレイヤーの移動を制御する
+        /// </summary>
+        /// <param name="context"></param>
         public void OnMove(InputAction.CallbackContext context)
         {
             Vector2 move = context.ReadValue<Vector2>();
@@ -54,20 +69,22 @@ namespace FPS
             Debug.Log("Move: " + move);
         }
 
+        /// <summary>
+        /// プレイヤーの視線を変更する
+        /// </summary>
+        /// <param name="context"></param>
         public void OnLook(InputAction.CallbackContext context)
         {
             Vector2 look = context.ReadValue<Vector2>();
 
-            // マウスの感度を調整するための係数
-            float sensitivity = 0.1f;
-
             // プレイヤーの回転を計算
-            float yaw = look.x * sensitivity;
-            float pitch = -look.y * sensitivity; // 上下反転
+            float yaw = look.x * m_sensitivity;
+            float pitch = -look.y * m_sensitivity; // 上下反転
 
             // プレイヤーの回転を適用
             this.transform.Rotate(Vector3.up, yaw, Space.World);
-            this.transform.Rotate(Vector3.right, pitch, Space.Self);
+            // 縦軸方向の回転はカメラだけに適用
+            m_camera.transform.Rotate(Vector3.right, pitch, Space.Self);
 
             Debug.Log("Look: " + look);
         }
