@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -35,7 +37,9 @@ namespace FPS
 
         private PlayerInput m_playerInput;
         private Rigidbody m_rb;
+        private CharacterController m_characterController;
 
+        private Vector2 m_move;
         private float m_horizontal;
         private float m_vertical;
 
@@ -62,6 +66,13 @@ namespace FPS
             {
                 Debug.LogError("Rigidbody component not found.");
             }
+
+            m_characterController = GetComponent<CharacterController>();
+
+            if (m_characterController == null)
+            {
+                Debug.LogError("CharacterController component not found.");
+            }
         }
 
         private void Update()
@@ -83,23 +94,74 @@ namespace FPS
                 }
             }
 
-            Vector3 dir = (this.transform.forward * m_vertical + this.transform.right * m_horizontal).normalized;
+            if (m_isGround)
+            {
+                Vector3 dir = (this.transform.forward * m_vertical + this.transform.right * m_horizontal).normalized;
 
-            // 入力があれば、プレイヤーの向いている向きを基準に入力方向に動かす
-            if (dir != Vector3.zero)
-            {
-                m_rb.AddForce(dir * m_moveSpeed);
-            }
+                // 入力があれば、プレイヤーの向いている向きを基準に入力方向に動かす
+                if (dir != Vector3.zero)
+                {
+                    m_rb.velocity = dir * m_moveSpeed;
+                }
 
-            if (m_isWalking)
-            {
-                m_rb.velocity = m_rb.velocity.normalized * m_walkSpeed;
-            }
-            else if (m_rb.velocity.magnitude > m_maxSpeed)
-            {
-                m_rb.velocity = m_rb.velocity.normalized * m_maxSpeed;
+                if (m_isWalking)
+                {
+                    m_rb.velocity = m_rb.velocity.normalized * m_walkSpeed;
+                }
+                else if (m_rb.velocity.magnitude > m_maxSpeed)
+                {
+                    m_rb.velocity = m_rb.velocity.normalized * m_maxSpeed;
+                }
             }
         }
+
+        //private void Move()
+        //{
+        //    // set target speed based on move speed, sprint speed and if sprint is pressed
+        //    float targetSpeed = m_isWalking ? m_walkSpeed : m_moveSpeed;
+
+        //    // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
+
+        //    // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
+        //    // if there is no input, set the target speed to 0
+        //    if (m_move == Vector2.zero) targetSpeed = 0.0f;
+
+        //    // a reference to the players current horizontal velocity
+        //    float currentHorizontalSpeed = new Vector3(m_characterController.velocity.x, 0.0f, m_characterController.velocity.z).magnitude;
+
+        //    float speedOffset = 0.1f;
+        //    float inputMagnitude = m_move.magnitude;
+        //    float speed = 0.0f;
+
+        //    // accelerate or decelerate to target speed
+        //    if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
+        //    {
+        //        // creates curved result rather than a linear one giving a more organic speed change
+        //        // note T in Lerp is clamped, so we don't need to clamp our speed
+        //        speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude, Time.deltaTime * 10);
+
+        //        // round speed to 3 decimal places
+        //        speed = Mathf.Round(speed * 1000f) / 1000f;
+        //    }
+        //    else
+        //    {
+        //        speed = targetSpeed;
+        //    }
+
+        //    // normalise input direction
+        //    Vector3 inputDirection = new Vector3(m_move.x, 0.0f, m_move.y).normalized;
+
+        //    // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
+        //    // if there is a move input rotate player when the player is moving
+        //    if (m_move != Vector2.zero)
+        //    {
+        //        // move
+        //        inputDirection = transform.right * m_move.x + transform.forward * m_move.y;
+        //    }
+
+        //    // move the player
+        //    m_characterController.Move(inputDirection.normalized * (speed * Time.deltaTime));
+        //}
 
         private void OnCollisionEnter(Collision collision)
         {
@@ -117,6 +179,7 @@ namespace FPS
         public void OnMove(InputAction.CallbackContext context)
         {
             Vector2 move = context.ReadValue<Vector2>();
+            m_move = move;
             m_horizontal = move.x;
             m_vertical = move.y;
             Debug.Log("Move: " + move);
@@ -169,10 +232,10 @@ namespace FPS
             if (!m_isGround) return;
             if (context.started)
             {
+                Debug.Log("Jump");
                 m_rb.AddForce(Vector3.up * m_jumpForce, ForceMode.Impulse);
                 m_isGround = false;
             }
-            Debug.Log("Jump");
         }
 
         public void OnCrouching(InputAction.CallbackContext context)
@@ -184,6 +247,18 @@ namespace FPS
             else if (context.canceled)
             {
                 m_anim.SetBool("isCrouching", false);
+            }
+        }
+
+        public void OnAiming(InputAction.CallbackContext context)
+        {
+            if (context.started)
+            {
+                m_anim.SetBool("isAiming", true);
+            }
+            else if (context.canceled)
+            {
+                //m_anim.SetBool("isAiming", false);
             }
         }
     }

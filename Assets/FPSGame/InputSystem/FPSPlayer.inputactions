@@ -58,6 +58,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Aim",
+                    "type": "Button",
+                    "id": "f764a652-d689-42ee-8c0c-84730af5c898",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -311,6 +320,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Crouching",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c9de2262-7a29-4992-9134-55ff1f6c2aea",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Aim",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
