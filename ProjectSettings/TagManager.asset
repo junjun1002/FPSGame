@@ -3,7 +3,24 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - CinemachineTarget
+  - eq
+  - wood
+  - stone
+  - fireball
+  - blood
+  - body
+  - glass
+  - metall_door
+  - wood_door
+  - dirt
+  - metall
+  - wood_door_glass
+  - petrol
+  - targets
+  - rycle
+  - Ground
   layers:
   - Default
   - TransparentFX

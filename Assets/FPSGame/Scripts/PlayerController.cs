@@ -13,6 +13,10 @@ namespace FPS
         [SerializeField] float m_walkSpeed = 2.0f;
         /// <summary>プレイヤーの最大速度</summary>
         [SerializeField] float m_maxSpeed = 10.0f;
+
+        /// <summary>プレイヤーのジャンプ力</summary>
+        [SerializeField] float m_jumpForce = 5.0f;
+
         /// <summary>プレイヤーのカメラ</summary>
         [SerializeField] GameObject m_camera;
 
@@ -27,9 +31,14 @@ namespace FPS
 
         /// <summary>プレイヤーが歩いているかどうか</summary>
         private bool m_isWalking = false;
+        /// <summary>プレイヤーが地面にいるかどうか</summary>
+        private bool m_isGround = true;
 
         private void Awake()
         {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
             m_playerInput = GetComponent<PlayerInput>();
 
             if (m_playerInput == null)
@@ -47,6 +56,23 @@ namespace FPS
 
         private void Update()
         {
+            if (Cursor.visible)
+            {
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    Cursor.visible = false;
+                    Cursor.lockState = CursorLockMode.Locked;
+                }
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.None;
+                }
+            }
+
             Vector3 dir = (this.transform.forward * m_vertical + this.transform.right * m_horizontal).normalized;
 
             // 入力があれば、プレイヤーの向いている向きを基準に入力方向に動かす
@@ -62,6 +88,15 @@ namespace FPS
             else if (m_rb.velocity.magnitude > m_maxSpeed)
             {
                 m_rb.velocity = m_rb.velocity.normalized * m_maxSpeed;
+            }
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.tag == "Ground")
+            {
+                Debug.Log("Grounded");
+                m_isGround = true;
             }
         }
 
@@ -117,6 +152,12 @@ namespace FPS
 
         public void OnJump(InputAction.CallbackContext context)
         {
+            if (!m_isGround) return;
+            if (context.started)
+            {
+                m_rb.AddForce(Vector3.up * m_jumpForce, ForceMode.Impulse);
+                m_isGround = false;
+            }
             Debug.Log("Jump");
         }
     }
