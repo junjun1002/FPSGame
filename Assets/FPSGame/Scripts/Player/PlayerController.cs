@@ -30,7 +30,13 @@ namespace FPS
         /// <summary>プレイヤーのカメラ</summary>
         [SerializeField] GameObject m_camera;
 
+        [SerializeField] GameObject m_gun;
+        [SerializeField] GameObject m_rightHandPos;
+        [SerializeField] GameObject m_leftHandPos;
+        /// <summary>プレイヤーの銃口</summary>
         [SerializeField] GameObject m_muzzle;
+        /// <summary>射撃の着弾地点のエフェクト</summary>
+        [SerializeField] ParticleSystem m_hitSpark;
 
         /// <summary>キャラクターのアニメーション</summary>
         [SerializeField] Animator m_anim;
@@ -196,6 +202,9 @@ namespace FPS
                 m_lineRenderer.SetPosition(0, m_muzzle.transform.position);
                 m_lineRenderer.SetPosition(1, hit.point);
 
+                m_hitSpark.transform.position = hit.point;
+                m_hitSpark.Play();
+
                 // 射撃のエフェクトを再生
                 //m_shootEffect.Play();
 
@@ -310,6 +319,32 @@ namespace FPS
             {
                 m_anim.SetBool("isAiming", false);
             }
+        }
+
+        void OnAnimatorIK()
+        {
+            m_anim.SetLookAtWeight(1, 1, 1, 1, 1);
+            Debug.Log(Camera.main.transform.forward);
+            Debug.DrawLine(Camera.main.transform.position, Camera.main.transform.forward * 100, Color.red);
+
+            m_anim.SetLookAtPosition(Camera.main.transform.position + Camera.main.transform.forward * 100);
+
+            Vector3 ikTarget = Camera.main.transform.position + Camera.main.transform.forward * 100;
+
+            // 右手のIKを設定
+            m_anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1.0f);
+            m_anim.SetIKRotationWeight(AvatarIKGoal.RightHand, 1.0f);
+            m_anim.SetIKPosition(AvatarIKGoal.RightHand, m_rightHandPos.transform.position);
+            m_anim.SetIKRotation(AvatarIKGoal.RightHand, m_rightHandPos.transform.rotation);
+
+            // 左手のIKを設定
+            m_anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1.0f);
+            m_anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1.0f);
+            m_anim.SetIKPosition(AvatarIKGoal.LeftHand, m_leftHandPos.transform.position);
+            m_anim.SetIKRotation(AvatarIKGoal.LeftHand, m_leftHandPos.transform.rotation);
+
+            // 銃の位置と回転を右手のIKターゲットに追従させる
+            m_gun.transform.rotation = Quaternion.LookRotation(ikTarget - m_muzzle.transform.position);
         }
     }
 }
