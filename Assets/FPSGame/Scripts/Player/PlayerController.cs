@@ -145,6 +145,13 @@ namespace FPS
 
         public void Fire()
         {
+            if (m_status.CurrentBulletCount <= 0)
+            {
+                m_anim.SetBool("isReload", true);
+                return;
+            }
+                m_status.CurrentBulletCount--;
+
             // ƒJƒƒ‰‚Ì’†‰›‚©‚çƒŒƒC‚ð”ò‚Î‚·
             Ray ray = new Ray(m_camera.transform.position, m_camera.transform.forward);
             RaycastHit hit;
@@ -175,6 +182,12 @@ namespace FPS
                 m_lineRenderer.SetPosition(0, Vector3.zero);
                 m_lineRenderer.SetPosition(1, Vector3.zero);
             }
+        }
+
+        public void Reload()
+        {
+            m_status.CurrentBulletCount = m_status.GetPlayerStatusData().GetMaxBulletCount();
+            m_anim.SetBool("isReload", false);
         }
 
         private IEnumerator ClearLineAfterSeconds(float seconds)
@@ -276,6 +289,13 @@ namespace FPS
         /// <param name="context"></param>
         public void OnFire(InputAction.CallbackContext context)
         {
+            if (m_status.CurrentBulletCount <= 0)
+            {
+                m_anim.SetBool("isReload", true);
+                m_anim.SetBool("isFire", false);
+                return;
+            }
+
             if (context.started)
             {
                 m_anim.SetBool("isFire", true);
