@@ -29,6 +29,9 @@ namespace FPS
 
         /// <summary>プレイヤーのカメラ</summary>
         [SerializeField] GameObject m_camera;
+
+        [SerializeField] GameObject m_muzzle;
+
         /// <summary>キャラクターのアニメーション</summary>
         [SerializeField] Animator m_anim;
 
@@ -37,7 +40,8 @@ namespace FPS
 
         private PlayerInput m_playerInput;
         private Rigidbody m_rb;
-        private CharacterController m_characterController;
+        /// <summary>射撃のラインレンダラー</summary>
+        private LineRenderer m_lineRenderer;
 
         private Vector2 m_move;
         private float m_horizontal;
@@ -53,18 +57,25 @@ namespace FPS
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
-            m_playerInput = GetComponent<PlayerInput>();
+            m_playerInput = this.GetComponentInParent<PlayerInput>();
 
             if (m_playerInput == null)
             {
                 Debug.LogError("PlayerInput component not found.");
             }
 
-            m_rb = GetComponent<Rigidbody>();
+            m_rb = this.GetComponentInParent<Rigidbody>();
 
             if (m_rb == null)
             {
                 Debug.LogError("Rigidbody component not found.");
+            }
+
+            m_lineRenderer = this.GetComponentInParent<LineRenderer>();
+
+            if (m_lineRenderer == null)
+            {
+                Debug.LogError("LineRenderer component not found.");
             }
         }
 
@@ -169,6 +180,33 @@ namespace FPS
             {
                 Debug.Log("Grounded");
                 m_isGround = true;
+            }
+        }
+
+        public void Fire()
+        {
+            // カメラの中央からレイを飛ばす
+            Ray ray = new Ray(m_camera.transform.position, m_camera.transform.forward);
+            RaycastHit hit;
+
+            // レイが当たった場合
+            if (Physics.Raycast(ray, out hit))
+            {
+                // 銃の先端からレイが当たった場所までのラインを描画
+                m_lineRenderer.SetPosition(0, m_muzzle.transform.position);
+                m_lineRenderer.SetPosition(1, hit.point);
+
+                // 射撃のエフェクトを再生
+                //m_shootEffect.Play();
+
+                // ヒットしたオブジェクトに対して何か処理を行う（例：ダメージを与える）
+                // hit.collider.gameObject.GetComponent<Health>()?.TakeDamage(damage);
+            }
+            else
+            {
+                // レイが当たらなかった場合、ラインを無効にする
+                m_lineRenderer.SetPosition(0, Vector3.zero);
+                m_lineRenderer.SetPosition(1, Vector3.zero);
             }
         }
 
