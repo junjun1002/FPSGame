@@ -9,13 +9,6 @@ namespace FPS
 {
     public class PlayerController : MonoBehaviour
     {
-        /// <summary>プレイヤーの移動速度</summary>
-        [SerializeField] float m_moveSpeed = 5.0f;
-        /// <summary>プレイヤーの歩行速度</summary>
-        [SerializeField] float m_walkSpeed = 2.0f;
-        /// <summary>プレイヤーの最大速度</summary>
-        [SerializeField] float m_maxSpeed = 10.0f;
-
         /// <summary>
         /// カメラの垂直方向の回転角度の制限
         /// </summary>
@@ -23,9 +16,6 @@ namespace FPS
         [SerializeField] float m_maxPitch = 45.0f;
 
         private float m_currentPitch = 0.0f;
-
-        /// <summary>プレイヤーのジャンプ力</summary>
-        [SerializeField] float m_jumpForce = 5.0f;
 
         /// <summary>プレイヤーのカメラ</summary>
         [SerializeField] GameObject m_camera;
@@ -48,6 +38,7 @@ namespace FPS
 
         private PlayerInput m_playerInput;
         private Rigidbody m_rb;
+        private PlayerStatus m_status;
         /// <summary>射撃のラインレンダラー</summary>
         private LineRenderer m_lineRenderer;
 
@@ -87,6 +78,13 @@ namespace FPS
             {
                 Debug.LogError("LineRenderer component not found.");
             }
+
+            m_status = this.GetComponentInParent<PlayerStatus>();
+
+            if (m_status == null)
+            {
+                Debug.LogError("PlayerStatus component not found.");
+            }
         }
 
         private void Update()
@@ -115,7 +113,7 @@ namespace FPS
                 // 入力があれば、プレイヤーの向いている向きを基準に入力方向に動かす
                 if (dir != Vector3.zero)
                 {
-                    m_rb.velocity = dir * m_moveSpeed;
+                    m_rb.velocity = dir * m_status.GetPlayerStatusData().GetMoveSpeed();
                 }
                 else
                 {
@@ -125,64 +123,16 @@ namespace FPS
 
                 if (m_isWalking)
                 {
-                    m_rb.velocity = m_rb.velocity.normalized * m_walkSpeed;
+                    m_rb.velocity = m_rb.velocity.normalized * m_status.GetPlayerStatusData().GetWalkSpeed();
                 }
-                else if (m_rb.velocity.magnitude > m_maxSpeed)
+                else if (m_rb.velocity.magnitude > m_status.GetPlayerStatusData().GetMaxSpeed())
                 {
-                    m_rb.velocity = m_rb.velocity.normalized * m_maxSpeed;
+                    m_rb.velocity = m_rb.velocity.normalized * m_status.GetPlayerStatusData().GetMaxSpeed();
                 }
 
                 m_anim.SetFloat("Speed", m_rb.velocity.magnitude);
             }
         }
-
-        //private void Move()
-        //{
-        //    // set target speed based on move speed, sprint speed and if sprint is pressed
-        //    float targetSpeed = m_isWalking ? m_walkSpeed : m_moveSpeed;
-
-        //    // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
-
-        //    // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-        //    // if there is no input, set the target speed to 0
-        //    if (m_move == Vector2.zero) targetSpeed = 0.0f;
-
-        //    // a reference to the players current horizontal velocity
-        //    float currentHorizontalSpeed = new Vector3(m_characterController.velocity.x, 0.0f, m_characterController.velocity.z).magnitude;
-
-        //    float speedOffset = 0.1f;
-        //    float inputMagnitude = m_move.magnitude;
-        //    float speed = 0.0f;
-
-        //    // accelerate or decelerate to target speed
-        //    if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
-        //    {
-        //        // creates curved result rather than a linear one giving a more organic speed change
-        //        // note T in Lerp is clamped, so we don't need to clamp our speed
-        //        speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude, Time.deltaTime * 10);
-
-        //        // round speed to 3 decimal places
-        //        speed = Mathf.Round(speed * 1000f) / 1000f;
-        //    }
-        //    else
-        //    {
-        //        speed = targetSpeed;
-        //    }
-
-        //    // normalise input direction
-        //    Vector3 inputDirection = new Vector3(m_move.x, 0.0f, m_move.y).normalized;
-
-        //    // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-        //    // if there is a move input rotate player when the player is moving
-        //    if (m_move != Vector2.zero)
-        //    {
-        //        // move
-        //        inputDirection = transform.right * m_move.x + transform.forward * m_move.y;
-        //    }
-
-        //    // move the player
-        //    m_characterController.Move(inputDirection.normalized * (speed * Time.deltaTime));
-        //}
 
         private void OnCollisionEnter(Collision collision)
         {
@@ -303,7 +253,7 @@ namespace FPS
             if (context.started)
             {
                 Debug.Log("Jump");
-                m_rb.AddForce(Vector3.up * m_jumpForce, ForceMode.Impulse);
+                m_rb.AddForce(Vector3.up * m_status.GetPlayerStatusData().GetJumpForce(), ForceMode.Impulse);
                 m_isGround = false;
             }
         }
