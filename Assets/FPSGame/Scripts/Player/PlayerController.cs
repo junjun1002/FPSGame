@@ -35,6 +35,8 @@ namespace FPS
         [SerializeField] GameObject m_leftHandPos;
         /// <summary>プレイヤーの銃口</summary>
         [SerializeField] GameObject m_muzzle;
+        /// <summary>射撃時のエフェクト/summary>
+        [SerializeField] ParticleSystem m_muzzleFlash;
         /// <summary>射撃の着弾地点のエフェクト</summary>
         [SerializeField] ParticleSystem m_hitSpark;
 
@@ -53,6 +55,8 @@ namespace FPS
         private float m_horizontal;
         private float m_vertical;
 
+        private Coroutine m_clearLine;
+
         /// <summary>プレイヤーが歩いているかどうか</summary>
         private bool m_isWalking = false;
         /// <summary>プレイヤーが地面にいるかどうか</summary>
@@ -70,7 +74,7 @@ namespace FPS
                 Debug.LogError("PlayerInput component not found.");
             }
 
-            m_rb = this.GetComponentInParent<Rigidbody>();
+            m_rb = GetComponent<Rigidbody>();
 
             if (m_rb == null)
             {
@@ -195,6 +199,9 @@ namespace FPS
             Ray ray = new Ray(m_camera.transform.position, m_camera.transform.forward);
             RaycastHit hit;
 
+            m_muzzleFlash.transform.position = m_muzzle.transform.position;
+            m_muzzleFlash.Play();
+
             // レイが当たった場合
             if (Physics.Raycast(ray, out hit))
             {
@@ -202,21 +209,33 @@ namespace FPS
                 m_lineRenderer.SetPosition(0, m_muzzle.transform.position);
                 m_lineRenderer.SetPosition(1, hit.point);
 
+                // 着弾地点のエフェクトを再生
                 m_hitSpark.transform.position = hit.point;
                 m_hitSpark.Play();
 
-                // 射撃のエフェクトを再生
-                //m_shootEffect.Play();
+                // ラインを消すコルーチンを開始
+                m_clearLine = StartCoroutine(ClearLineAfterSeconds(0.05f)); // 2秒後にラインを消す
 
-                // ヒットしたオブジェクトに対して何か処理を行う（例：ダメージを与える）
-                // hit.collider.gameObject.GetComponent<Health>()?.TakeDamage(damage);
-            }
+            // ヒットしたオブジェクトに対して何か処理を行う（例：ダメージを与える）
+            // hit.collider.gameObject.GetComponent<Health>()?.TakeDamage(damage);
+        }
             else
             {
                 // レイが当たらなかった場合、ラインを無効にする
                 m_lineRenderer.SetPosition(0, Vector3.zero);
                 m_lineRenderer.SetPosition(1, Vector3.zero);
             }
+        }
+
+        private IEnumerator ClearLineAfterSeconds(float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+
+            // ラインを無効にする
+            m_lineRenderer.SetPosition(0, Vector3.zero);
+            m_lineRenderer.SetPosition(1, Vector3.zero);
+
+            StopCoroutine(m_clearLine);
         }
 
         /// <summary>
@@ -274,6 +293,10 @@ namespace FPS
             Debug.Log("Look: " + look);
         }
 
+        /// <summary>
+        /// プレイヤーのジャンプを制御する
+        /// </summary>
+        /// <param name="context"></param>
         public void OnJump(InputAction.CallbackContext context)
         {
             if (!m_isGround) return;
@@ -285,18 +308,22 @@ namespace FPS
             }
         }
 
-        public void OnCrouching(InputAction.CallbackContext context)
-        {
-            if (context.started)
-            {
-                m_anim.SetBool("isCrouching", true);
-            }
-            else if (context.canceled)
-            {
-                m_anim.SetBool("isCrouching", false);
-            }
-        }
+        //public void OnCrouching(InputAction.CallbackContext context)
+        //{
+        //    if (context.started)
+        //    {
+        //        m_anim.SetBool("isCrouching", true);
+        //    }
+        //    else if (context.canceled)
+        //    {
+        //        m_anim.SetBool("isCrouching", false);
+        //    }
+        //}
 
+        /// <summary>
+        /// プレイヤーの射撃を制御する
+        /// </summary>
+        /// <param name="context"></param>
         public void OnFire(InputAction.CallbackContext context)
         {
             if (context.started)
@@ -309,18 +336,25 @@ namespace FPS
             }
         }
 
-        public void OnAiming(InputAction.CallbackContext context)
-        {
-            if (context.started)
-            {
-                m_anim.SetBool("isAiming", true);
-            }
-            else if (context.canceled)
-            {
-                m_anim.SetBool("isAiming", false);
-            }
-        }
+        /// <summary>
+        /// プレイヤーのエイムを制御する
+        /// </summary>
+        /// <param name="context"></param>
+        //public void OnAiming(InputAction.CallbackContext context)
+        //{
+        //    if (context.started)
+        //    {
+        //        m_anim.SetBool("isAiming", true);
+        //    }
+        //    else if (context.canceled)
+        //    {
+        //        m_anim.SetBool("isAiming", false);
+        //    }
+        //}
 
+        /// <summary>
+        /// アニメーションのIKを制御する
+        /// </summary>
         void OnAnimatorIK()
         {
             m_anim.SetLookAtWeight(1, 1, 1, 1, 1);
@@ -343,7 +377,7 @@ namespace FPS
             m_anim.SetIKPosition(AvatarIKGoal.LeftHand, m_leftHandPos.transform.position);
             m_anim.SetIKRotation(AvatarIKGoal.LeftHand, m_leftHandPos.transform.rotation);
 
-            // 銃の位置と回転を右手のIKターゲットに追従させる
+            // 銃の回転をカメラの中央に合わせる
             m_gun.transform.rotation = Quaternion.LookRotation(ikTarget - m_muzzle.transform.position);
         }
     }
