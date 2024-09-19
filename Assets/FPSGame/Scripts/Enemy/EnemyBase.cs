@@ -36,6 +36,8 @@ namespace FPS
         /// <param name="playerPower"></param>
         public void TakeDamage(int playerPower, string hitPart)
         {
+            m_agent.isStopped = true;
+
             int damage = playerPower;
             // ヒットした部位によってダメージを変更
             if (hitPart == "Head")
@@ -58,18 +60,37 @@ namespace FPS
             }
         }
 
-        protected virtual void Attack() { }
-
-        protected virtual void MoveToPlayer() { }
-
+        /// <summary>
+        /// 攻撃判定をアクティブにする
+        /// </summary>
         public void OnActiveAttackDecision()
         {
             m_attackDecision.SetActive(true);
         }
 
+        /// <summary>
+        /// 攻撃判定を非アクティブにする
+        /// </summary>
         public void OnDeactiveAttackDecision()
         {
             m_attackDecision.SetActive(false);
         }
+
+        /// <summary>
+        /// 追跡開始
+        /// </summary>
+        public void OnChase()
+        {
+            m_agent.isStopped = false;
+        }
+
+        /// <summary>
+        /// 攻撃
+        /// </summary>
+        protected virtual void Attack() { }
+        /// <summary>
+        /// プレイヤーに向かって移動
+        /// </summary>
+        protected virtual void MoveToPlayer() { }
     }
 }

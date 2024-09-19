@@ -13,7 +13,10 @@ namespace FPS
                 Attack();
             }
 
-            MoveToPlayer();
+            if (!m_agent.isStopped)
+            {
+                MoveToPlayer();
+            }
         }
 
         protected override void Attack()
