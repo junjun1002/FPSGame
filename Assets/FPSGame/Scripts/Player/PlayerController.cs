@@ -88,6 +88,8 @@ namespace FPS
             {
                 Debug.LogError("PlayerStatus component not found.");
             }
+
+            m_status.OnPlayerDeadAction += OnPlayerDie;
         }
 
         private void Update()
@@ -235,6 +237,15 @@ namespace FPS
         }
 
         /// <summary>
+        /// プレイヤーが死亡したときの処理
+        /// </summary>
+        private void OnPlayerDie()
+        {
+            m_anim.SetBool("isDie", true);
+            m_playerInput.enabled = false;
+        }
+
+        /// <summary>
         /// プレイヤーの移動を制御する
         /// </summary>
         /// <param name="context"></param>
@@ -352,11 +363,22 @@ namespace FPS
 
             AnimatorStateInfo stateInfo = m_anim.GetCurrentAnimatorStateInfo(0);
 
+            // 死亡中はIKを無効にする
+            if (stateInfo.IsName("Die"))
+            {
+                m_gun.transform.position = m_anim.GetBoneTransform(HumanBodyBones.RightHand).position;
+                m_gun.transform.rotation = m_anim.GetBoneTransform(HumanBodyBones.RightHand).rotation;
+                m_camera.transform.position = m_anim.GetBoneTransform(HumanBodyBones.Head).position;
+                m_camera.transform.rotation = Quaternion.LookRotation(-m_anim.GetBoneTransform(HumanBodyBones.Head).up);
+                return;
+            }
+
             // 右手のIKを設定
             m_anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1.0f);
             m_anim.SetIKRotationWeight(AvatarIKGoal.RightHand, 1.0f);
             m_anim.SetIKPosition(AvatarIKGoal.RightHand, m_rightHandPos.transform.position);
             m_anim.SetIKRotation(AvatarIKGoal.RightHand, m_rightHandPos.transform.rotation);
+
 
             // 銃の回転をカメラの中央に合わせる
             m_gun.transform.rotation = Quaternion.LookRotation(ikTarget - m_muzzle.transform.position);

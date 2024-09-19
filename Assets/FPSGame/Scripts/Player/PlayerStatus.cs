@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +7,10 @@ namespace FPS
 {
     public class PlayerStatus : MonoBehaviour
     {
+
+        /// <summary>Player‚ªŽ€–S‚µ‚½‚Æ‚«‚ÌƒCƒxƒ“ƒg</summary>
+        public Action OnPlayerDeadAction { get; set; }
+
         [SerializeField] PlayerStatusData playerStatusData = default;
 
         public PlayerStatusData GetPlayerStatusData() { return playerStatusData; }
@@ -27,6 +30,12 @@ namespace FPS
                 {
                     m_currentHP = value;
                     m_hpBar.value = m_currentHP;
+
+                    if (m_currentHP <= 0)
+                    {
+                        Debug.Log("Player‚ªŽ€–S‚µ‚Ü‚µ‚½");
+                        OnPlayerDead();
+                    }
                 }
             }
         }
@@ -58,9 +67,14 @@ namespace FPS
         {
             if (Input.GetKeyDown(KeyCode.V))
             {
-                Debug.Log("HP‚ð1Œ¸‚ç‚·");
-                CurrentHP -= 1;
+                Debug.Log("HP‚ð20Œ¸‚ç‚·");
+                CurrentHP -= 20;
             }
+        }
+
+        private void OnPlayerDead()
+        {
+            OnPlayerDeadAction?.Invoke();
         }
     }
 }
