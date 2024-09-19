@@ -108,32 +108,14 @@ namespace FPS
 
             if (m_isGround)
             {
-                Vector3 dir = (this.transform.forward * m_vertical + this.transform.right * m_horizontal).normalized;
-
-                // 入力があれば、プレイヤーの向いている向きを基準に入力方向に動かす
-                if (dir != Vector3.zero)
-                {
-                    m_rb.velocity = dir * m_status.GetPlayerStatusData().GetMoveSpeed();
-                }
-                else
-                {
-                    m_rb.velocity = Vector3.zero;
-                    m_anim.SetFloat("Speed", m_rb.velocity.magnitude);
-                }
-
-                if (m_isWalking)
-                {
-                    m_rb.velocity = m_rb.velocity.normalized * m_status.GetPlayerStatusData().GetWalkSpeed();
-                }
-                else if (m_rb.velocity.magnitude > m_status.GetPlayerStatusData().GetMaxSpeed())
-                {
-                    m_rb.velocity = m_rb.velocity.normalized * m_status.GetPlayerStatusData().GetMaxSpeed();
-                }
-
-                m_anim.SetFloat("Speed", m_rb.velocity.magnitude);
+                Move();
             }
         }
 
+        /// <summary>
+        /// プレイヤーの当たり判定を制御する
+        /// </summary>
+        /// <param name="collision"></param>
         private void OnCollisionEnter(Collision collision)
         {
             if (collision.gameObject.tag == "Ground")
@@ -143,6 +125,38 @@ namespace FPS
             }
         }
 
+        /// <summary>
+        /// プレイヤーの移動を制御する
+        /// </summary>
+        private void Move()
+        {
+            Vector3 dir = (this.transform.forward * m_vertical + this.transform.right * m_horizontal).normalized;
+
+            // 入力があれば、プレイヤーの向いている向きを基準に入力方向に動かす
+            if (dir != Vector3.zero)
+            {
+                m_rb.velocity = dir * m_status.GetPlayerStatusData().GetMoveSpeed();
+            }
+            else
+            {
+                m_rb.velocity = Vector3.zero;
+            }
+
+            if (m_isWalking)
+            {
+                m_rb.velocity = m_rb.velocity.normalized * m_status.GetPlayerStatusData().GetWalkSpeed();
+            }
+            else if (m_rb.velocity.magnitude > m_status.GetPlayerStatusData().GetMaxSpeed())
+            {
+                m_rb.velocity = m_rb.velocity.normalized * m_status.GetPlayerStatusData().GetMaxSpeed();
+            }
+
+            m_anim.SetFloat("Speed", m_rb.velocity.magnitude);
+        }
+
+        /// <summary>
+        /// 弾を発射する
+        /// </summary>
         public void Fire()
         {
             if (m_status.CurrentBulletCount <= 0)
@@ -150,12 +164,14 @@ namespace FPS
                 m_anim.SetBool("isReload", true);
                 return;
             }
-                m_status.CurrentBulletCount--;
+
+            m_status.CurrentBulletCount--;
 
             // カメラの中央からレイを飛ばす
             Ray ray = new Ray(m_camera.transform.position, m_camera.transform.forward);
             RaycastHit hit;
 
+            // 射撃時のエフェクトを再生
             m_muzzleFlash.transform.position = m_muzzle.transform.position;
             m_muzzleFlash.Play();
 
@@ -171,25 +187,37 @@ namespace FPS
                 m_hitSpark.Play();
 
                 // ラインを消すコルーチンを開始
-                m_clearLine = StartCoroutine(ClearLineAfterSeconds(0.05f)); // 2秒後にラインを消す
+                m_clearLine = StartCoroutine(ClearLineAfterSeconds(0.05f)); // 0.05秒後にラインを消す
 
-            // ヒットしたオブジェクトに対して何か処理を行う（例：ダメージを与える）
-            // hit.collider.gameObject.GetComponent<Health>()?.TakeDamage(damage);
-        }
+                // ヒットしたオブジェクトに対して何か処理を行う（例：ダメージを与える）
+                // hit.collider.gameObject.GetComponent<Health>()?.TakeDamage(damage);
+            }
             else
             {
-                // レイが当たらなかった場合、ラインを無効にする
-                m_lineRenderer.SetPosition(0, Vector3.zero);
-                m_lineRenderer.SetPosition(1, Vector3.zero);
+                // レイが当たらなかった場合、100ユニット先までのラインを描画
+                Vector3 endPosition = ray.origin + ray.direction * 100;
+                m_lineRenderer.SetPosition(0, m_muzzle.transform.position);
+                m_lineRenderer.SetPosition(1, endPosition);
+
+                // ラインを消すコルーチンを開始
+                m_clearLine = StartCoroutine(ClearLineAfterSeconds(0.05f)); // 0.05秒後にラインを消す
             }
         }
 
+        /// <summary>
+        /// 弾をリロードする
+        /// </summary>
         public void Reload()
         {
             m_status.CurrentBulletCount = m_status.GetPlayerStatusData().GetMaxBulletCount();
             m_anim.SetBool("isReload", false);
         }
 
+        /// <summary>
+        /// 一定時間後にラインを消す
+        /// </summary>
+        /// <param name="seconds"></param>
+        /// <returns></returns>
         private IEnumerator ClearLineAfterSeconds(float seconds)
         {
             yield return new WaitForSeconds(seconds);
@@ -271,18 +299,6 @@ namespace FPS
             }
         }
 
-        //public void OnCrouching(InputAction.CallbackContext context)
-        //{
-        //    if (context.started)
-        //    {
-        //        m_anim.SetBool("isCrouching", true);
-        //    }
-        //    else if (context.canceled)
-        //    {
-        //        m_anim.SetBool("isCrouching", false);
-        //    }
-        //}
-
         /// <summary>
         /// プレイヤーの射撃を制御する
         /// </summary>
@@ -307,20 +323,18 @@ namespace FPS
         }
 
         /// <summary>
-        /// プレイヤーのエイムを制御する
+        /// プレイヤーのリロードを制御する
         /// </summary>
         /// <param name="context"></param>
-        //public void OnAiming(InputAction.CallbackContext context)
-        //{
-        //    if (context.started)
-        //    {
-        //        m_anim.SetBool("isAiming", true);
-        //    }
-        //    else if (context.canceled)
-        //    {
-        //        m_anim.SetBool("isAiming", false);
-        //    }
-        //}
+        public void OnReload(InputAction.CallbackContext context)
+        {
+            if (m_status.CurrentBulletCount == m_status.GetPlayerStatusData().GetMaxBulletCount()) return;
+
+            if (context.started)
+            {
+                m_anim.SetBool("isReload", true);
+            }
+        }
 
         /// <summary>
         /// アニメーションのIKを制御する
@@ -328,12 +342,11 @@ namespace FPS
         void OnAnimatorIK()
         {
             m_anim.SetLookAtWeight(1, 1, 1, 1, 1);
-            Debug.Log(Camera.main.transform.forward);
-            Debug.DrawLine(Camera.main.transform.position, Camera.main.transform.forward * 100, Color.red);
-
             m_anim.SetLookAtPosition(Camera.main.transform.position + Camera.main.transform.forward * 100);
 
             Vector3 ikTarget = Camera.main.transform.position + Camera.main.transform.forward * 100;
+
+            AnimatorStateInfo stateInfo = m_anim.GetCurrentAnimatorStateInfo(0);
 
             // 右手のIKを設定
             m_anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1.0f);
@@ -341,14 +354,17 @@ namespace FPS
             m_anim.SetIKPosition(AvatarIKGoal.RightHand, m_rightHandPos.transform.position);
             m_anim.SetIKRotation(AvatarIKGoal.RightHand, m_rightHandPos.transform.rotation);
 
+            // 銃の回転をカメラの中央に合わせる
+            m_gun.transform.rotation = Quaternion.LookRotation(ikTarget - m_muzzle.transform.position);
+
+            // リロード中は左手のIKを無効にする
+            if (stateInfo.IsName("Reload")) return;
+
             // 左手のIKを設定
             m_anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1.0f);
             m_anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1.0f);
             m_anim.SetIKPosition(AvatarIKGoal.LeftHand, m_leftHandPos.transform.position);
             m_anim.SetIKRotation(AvatarIKGoal.LeftHand, m_leftHandPos.transform.rotation);
-
-            // 銃の回転をカメラの中央に合わせる
-            m_gun.transform.rotation = Quaternion.LookRotation(ikTarget - m_muzzle.transform.position);
         }
     }
 }
