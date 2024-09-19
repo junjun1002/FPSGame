@@ -21,6 +21,7 @@ TagManager:
   - targets
   - rycle
   - Ground
+  - EnemyAttack
   layers:
   - Default
   - TransparentFX

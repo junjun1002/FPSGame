@@ -20,25 +20,6 @@ namespace FPS
         [SerializeField] TextMeshProUGUI m_bulletCountText;
 
         private int m_currentHP;
-        public int CurrentHP
-        {
-            get => m_currentHP;
-            set
-            {
-                // HPが変わったらイベントを実行
-                if (m_currentHP != value)
-                {
-                    m_currentHP = value;
-                    m_hpBar.value = m_currentHP;
-
-                    if (m_currentHP <= 0)
-                    {
-                        Debug.Log("Playerが死亡しました");
-                        OnPlayerDead();
-                    }
-                }
-            }
-        }
 
         private int m_currentBulletCount;
 
@@ -63,12 +44,20 @@ namespace FPS
             m_currentBulletCount = playerStatusData.GetMaxBulletCount();
         }
 
-        private void Update()
+        /// <summary>
+        /// ダメージを受ける
+        /// </summary>
+        /// <param name="damage"></param>
+        public void TakeDamege(int damage)
         {
-            if (Input.GetKeyDown(KeyCode.V))
+            m_currentHP -= damage;
+
+            m_hpBar.value = m_currentHP;
+
+            if (m_currentHP <= 0)
             {
-                Debug.Log("HPを20減らす");
-                CurrentHP -= 20;
+                Debug.Log("Playerが死亡しました");
+                OnPlayerDead();
             }
         }
 

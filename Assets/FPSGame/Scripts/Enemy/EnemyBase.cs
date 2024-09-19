@@ -8,8 +8,14 @@ namespace FPS
     {
         /// <summary>敵のステータスデータ</summary>
         [SerializeField] EnemyStatusData m_enemyData;
+
+        /// <summary>敵のステータスデータを取得</summary>
+        public EnemyStatusData GetEnemyData() { return m_enemyData; }
+
         /// <summary>敵のアニメーター</summary>
-        [SerializeField] Animator m_anim;
+        [SerializeField] protected Animator m_anim;
+        /// <summary>攻撃判定</summary>
+        [SerializeField] protected GameObject m_attackDecision;
 
         /// <summary>現在のHP</summary>
         private int m_currentHP;
@@ -45,6 +51,18 @@ namespace FPS
                 Destroy(gameObject);
                 Debug.Log("敵を倒した");
             }
+        }
+
+        protected virtual void Attack() { }
+
+        public void OnActiveAttackDecision()
+        {
+            m_attackDecision.SetActive(true);
+        }
+
+        public void OnDeactiveAttackDecision()
+        {
+            m_attackDecision.SetActive(false);
         }
     }
 }

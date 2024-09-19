@@ -130,6 +130,17 @@ namespace FPS
             }
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.tag == "EnemyAttack")
+            {
+                if (other.transform.root.gameObject.TryGetComponent<EnemyBase>(out var enemy))
+                {
+                    m_status.TakeDamege(enemy.GetEnemyData().GetPower());
+                }
+            }
+        }
+
         /// <summary>
         /// ƒvƒŒƒCƒ„[‚ÌˆÚ“®‚ğ§Œä‚·‚é
         /// </summary>
