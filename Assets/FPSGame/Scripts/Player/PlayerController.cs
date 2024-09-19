@@ -196,7 +196,12 @@ namespace FPS
                 // ラインを消すコルーチンを開始
                 m_clearLine = StartCoroutine(ClearLineAfterSeconds(0.05f)); // 0.05秒後にラインを消す
 
-                // ヒットしたオブジェクトに対して何か処理を行う（例：ダメージを与える）
+                // ヒットしたオブジェクトが敵であればダメージを与える
+                if (hit.transform.root.gameObject.TryGetComponent<EnemyBase>(out var enemy))
+                {
+                    enemy.TakeDamage(m_status.GetPlayerStatusData().GetPower(), hit.collider.gameObject.name);
+                }
+
                 // hit.collider.gameObject.GetComponent<Health>()?.TakeDamage(damage);
             }
             else
@@ -367,7 +372,7 @@ namespace FPS
             if (stateInfo.IsName("Die"))
             {
                 m_gun.transform.position = m_anim.GetBoneTransform(HumanBodyBones.RightHand).position;
-                m_gun.transform.rotation = m_anim.GetBoneTransform(HumanBodyBones.RightHand).rotation;
+                m_gun.transform.rotation = Quaternion.LookRotation(-m_anim.GetBoneTransform(HumanBodyBones.RightHand).right);
                 m_camera.transform.position = m_anim.GetBoneTransform(HumanBodyBones.Head).position;
                 m_camera.transform.rotation = Quaternion.LookRotation(-m_anim.GetBoneTransform(HumanBodyBones.Head).up);
                 return;

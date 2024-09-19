@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/FPSGame/Scenes/Test/Test_Player.unity
-    guid: 6f591579308a78848a84f5acbe428e63
+    path: Assets/FPSGame/Scenes/Test/Test_Enemy.unity
+    guid: c16d113ccc7f21f49831e5720276611d
   m_configObjects: {}
