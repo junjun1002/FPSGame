@@ -1652,6 +1652,7 @@ GameObject:
   - component: {fileID: 4409146032428632355}
   - component: {fileID: 7026007178585226555}
   - component: {fileID: 761990819141554364}
+  - component: {fileID: 961111755419610129}
   - component: {fileID: 3316431024569056249}
   - component: {fileID: 5592783962594075018}
   m_Layer: 0
@@ -1717,12 +1718,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 639d1b00fc0415b468b89aa390eb117d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moveSpeed: 5
-  m_walkSpeed: 2
-  m_maxSpeed: 10
   m_minPitch: -45
   m_maxPitch: 45
-  m_jumpForce: 5
   m_camera: {fileID: 812770908755688365}
   m_gun: {fileID: 864448121910505013}
   m_rightHandPos: {fileID: 5906005180037227659}
@@ -1732,6 +1729,22 @@ MonoBehaviour:
   m_hitSpark: {fileID: 0}
   m_anim: {fileID: 7026007178585226555}
   m_sensitivity: 0.1
+--- !u!114 &961111755419610129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4675318090523939773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8b38867004d8f94a9e25b1d2f0d24cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStatusData: {fileID: 11400000, guid: a90ecc96c7c15d14184dc3ae80d28bd2, type: 2}
+  m_hpBar: {fileID: 0}
+  m_bulletCount: {fileID: 0}
+  m_bulletCountText: {fileID: 0}
 --- !u!136 &3316431024569056249
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3131,26 +3144,18 @@ MonoBehaviour:
     m_ActionId: 2c489727-228e-4dd0-8810-ed730bc64039
     m_ActionName: Player/Walk[/Keyboard/shift]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 761990819141554364}
-        m_TargetAssemblyTypeName: FPS.PlayerController, Assembly-CSharp
-        m_MethodName: OnCrouching
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: e494c606-718b-4de6-9a71-e510d77b60e2
     m_ActionName: Player/Crouching[/Keyboard/leftCtrl]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f764a652-d689-42ee-8c0c-84730af5c898
+    m_ActionName: Player/Aim[/Mouse/rightButton]
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 761990819141554364}
         m_TargetAssemblyTypeName: FPS.PlayerController, Assembly-CSharp
-        m_MethodName: OnAiming
+        m_MethodName: OnReload
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3160,8 +3165,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: f764a652-d689-42ee-8c0c-84730af5c898
-    m_ActionName: Player/Aim[/Mouse/rightButton]
+    m_ActionId: 5a05e387-c1b4-4c41-8269-9ea8cf04b608
+    m_ActionName: Player/Reload[/Keyboard/r]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

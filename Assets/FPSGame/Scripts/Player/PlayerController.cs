@@ -20,9 +20,13 @@ namespace FPS
         /// <summary>プレイヤーのカメラ</summary>
         [SerializeField] GameObject m_camera;
 
+        /// <summary>プレイヤーの銃</summary>
         [SerializeField] GameObject m_gun;
+        /// <summary>プレイヤーの右手の位置</summary>
         [SerializeField] GameObject m_rightHandPos;
+        /// <summary>プレイヤーの左手の位置</summary>
         [SerializeField] GameObject m_leftHandPos;
+
         /// <summary>プレイヤーの銃口</summary>
         [SerializeField] GameObject m_muzzle;
         /// <summary>射撃時のエフェクト/summary>
@@ -42,7 +46,6 @@ namespace FPS
         /// <summary>射撃のラインレンダラー</summary>
         private LineRenderer m_lineRenderer;
 
-        private Vector2 m_move;
         private float m_horizontal;
         private float m_vertical;
 
@@ -236,7 +239,6 @@ namespace FPS
         public void OnMove(InputAction.CallbackContext context)
         {
             Vector2 move = context.ReadValue<Vector2>();
-            m_move = move;
             m_horizontal = move.x;
             m_vertical = move.y;
             Debug.Log("Move: " + move);

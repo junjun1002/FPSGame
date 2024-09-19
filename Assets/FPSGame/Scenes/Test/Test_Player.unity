@@ -1542,65 +1542,35 @@ PrefabInstance:
       propertyPath: m_muzzleFlash
       value: 
       objectReference: {fileID: 1061396805}
-    - target: {fileID: 8662606607032214930, guid: bb1ac30f005afa14b9c24a3f59b68019,
+    - target: {fileID: 961111755419610129, guid: bb1ac30f005afa14b9c24a3f59b68019,
         type: 3}
-      propertyPath: m_ActionEvents.Array.size
-      value: 18
-      objectReference: {fileID: 0}
-    - target: {fileID: 8662606607032214930, guid: bb1ac30f005afa14b9c24a3f59b68019,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[17].m_ActionId
-      value: 5a05e387-c1b4-4c41-8269-9ea8cf04b608
-      objectReference: {fileID: 0}
-    - target: {fileID: 8662606607032214930, guid: bb1ac30f005afa14b9c24a3f59b68019,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[17].m_ActionName
-      value: Player/Reload[/Keyboard/r]
-      objectReference: {fileID: 0}
-    - target: {fileID: 8662606607032214930, guid: bb1ac30f005afa14b9c24a3f59b68019,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[15].m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8662606607032214930, guid: bb1ac30f005afa14b9c24a3f59b68019,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[16].m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8662606607032214930, guid: bb1ac30f005afa14b9c24a3f59b68019,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8662606607032214930, guid: bb1ac30f005afa14b9c24a3f59b68019,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8662606607032214930, guid: bb1ac30f005afa14b9c24a3f59b68019,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      propertyPath: m_hpBar
       value: 
-      objectReference: {fileID: 7107347960067155389}
-    - target: {fileID: 8662606607032214930, guid: bb1ac30f005afa14b9c24a3f59b68019,
+      objectReference: {fileID: 1251463880}
+    - target: {fileID: 961111755419610129, guid: bb1ac30f005afa14b9c24a3f59b68019,
         type: 3}
-      propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      propertyPath: m_bulletCount
+      value: 
+      objectReference: {fileID: 653896966}
+    - target: {fileID: 961111755419610129, guid: bb1ac30f005afa14b9c24a3f59b68019,
+        type: 3}
+      propertyPath: m_bulletCountText
+      value: 
+      objectReference: {fileID: 1687449110}
+    - target: {fileID: 3316431024569056249, guid: bb1ac30f005afa14b9c24a3f59b68019,
+        type: 3}
+      propertyPath: m_Height
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 8662606607032214930, guid: bb1ac30f005afa14b9c24a3f59b68019,
+    - target: {fileID: 3316431024569056249, guid: bb1ac30f005afa14b9c24a3f59b68019,
         type: 3}
-      propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnReload
+      propertyPath: m_Radius
+      value: 0.4
       objectReference: {fileID: 0}
-    - target: {fileID: 8662606607032214930, guid: bb1ac30f005afa14b9c24a3f59b68019,
+    - target: {fileID: 3316431024569056249, guid: bb1ac30f005afa14b9c24a3f59b68019,
         type: 3}
-      propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: FPS.PlayerController, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 8662606607032214930, guid: bb1ac30f005afa14b9c24a3f59b68019,
-        type: 3}
-      propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
+      propertyPath: m_Center.y
+      value: 0.95
       objectReference: {fileID: 0}
     - target: {fileID: 8955270194845155689, guid: bb1ac30f005afa14b9c24a3f59b68019,
         type: 3}
@@ -1660,46 +1630,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4675318090523939773, guid: bb1ac30f005afa14b9c24a3f59b68019,
-        type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 7107347960067155388}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb1ac30f005afa14b9c24a3f59b68019, type: 3}
---- !u!1 &2612600525830256595 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4675318090523939773, guid: bb1ac30f005afa14b9c24a3f59b68019,
-    type: 3}
-  m_PrefabInstance: {fileID: 1440147016160703936}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7107347960067155388
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2612600525830256595}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8b38867004d8f94a9e25b1d2f0d24cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerStatusData: {fileID: 11400000, guid: a90ecc96c7c15d14184dc3ae80d28bd2, type: 2}
-  m_hpBar: {fileID: 1251463880}
-  m_bulletCount: {fileID: 653896966}
-  m_bulletCountText: {fileID: 1687449110}
---- !u!114 &7107347960067155389 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 761990819141554364, guid: bb1ac30f005afa14b9c24a3f59b68019,
-    type: 3}
-  m_PrefabInstance: {fileID: 1440147016160703936}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2612600525830256595}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 639d1b00fc0415b468b89aa390eb117d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
