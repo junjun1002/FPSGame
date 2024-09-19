@@ -26,7 +26,6 @@ namespace FPS
 
         protected override void MoveToPlayer()
         {
-            Debug.Log(m_player.transform.position);
             m_agent.destination = m_player.transform.position;
             m_anim.SetFloat("Speed", m_agent.velocity.magnitude);
         }

@@ -18,7 +18,7 @@ namespace FPS
         /// <summary>攻撃判定</summary>
         [SerializeField] protected GameObject m_attackDecision;
         /// <summary>ナビメッシュエージェント</summary>
-        [SerializeField] protected NavMeshAgent m_agent;
+        protected NavMeshAgent m_agent;
 
         [SerializeField] protected GameObject m_player;
 
@@ -28,6 +28,13 @@ namespace FPS
         private void Awake()
         {
             m_currentHP = m_enemyData.GetMaxHP();
+
+            m_agent = GetComponent<NavMeshAgent>();
+
+            if (m_agent == null)
+            {
+                Debug.LogError("NavMeshAgent component not found.");
+            }
         }
 
         /// <summary>
