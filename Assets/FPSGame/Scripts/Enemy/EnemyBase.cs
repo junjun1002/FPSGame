@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace FPS
 {
@@ -16,6 +17,10 @@ namespace FPS
         [SerializeField] protected Animator m_anim;
         /// <summary>攻撃判定</summary>
         [SerializeField] protected GameObject m_attackDecision;
+        /// <summary>ナビメッシュエージェント</summary>
+        [SerializeField] protected NavMeshAgent m_agent;
+
+        [SerializeField] protected GameObject m_player;
 
         /// <summary>現在のHP</summary>
         private int m_currentHP;
@@ -54,6 +59,8 @@ namespace FPS
         }
 
         protected virtual void Attack() { }
+
+        protected virtual void MoveToPlayer() { }
 
         public void OnActiveAttackDecision()
         {

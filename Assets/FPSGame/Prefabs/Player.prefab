@@ -1621,7 +1621,7 @@ GameObject:
   - component: {fileID: 3316431024569056249}
   - component: {fileID: 5592783962594075018}
   m_Layer: 0
-  m_Name: PolyartCharacter
+  m_Name: PlayerCharacter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
