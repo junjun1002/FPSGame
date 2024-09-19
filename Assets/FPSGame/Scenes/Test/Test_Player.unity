@@ -1557,21 +1557,6 @@ PrefabInstance:
       propertyPath: m_bulletCountText
       value: 
       objectReference: {fileID: 1687449110}
-    - target: {fileID: 3316431024569056249, guid: bb1ac30f005afa14b9c24a3f59b68019,
-        type: 3}
-      propertyPath: m_Height
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3316431024569056249, guid: bb1ac30f005afa14b9c24a3f59b68019,
-        type: 3}
-      propertyPath: m_Radius
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3316431024569056249, guid: bb1ac30f005afa14b9c24a3f59b68019,
-        type: 3}
-      propertyPath: m_Center.y
-      value: 0.95
-      objectReference: {fileID: 0}
     - target: {fileID: 8955270194845155689, guid: bb1ac30f005afa14b9c24a3f59b68019,
         type: 3}
       propertyPath: m_Name

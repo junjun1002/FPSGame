@@ -138,20 +138,22 @@ namespace FPS
             // 入力があれば、プレイヤーの向いている向きを基準に入力方向に動かす
             if (dir != Vector3.zero)
             {
-                m_rb.velocity = dir * m_status.GetPlayerStatusData().GetMoveSpeed();
+                if (m_isWalking)
+                {
+                    m_rb.velocity = dir * m_status.GetPlayerStatusData().GetWalkSpeed();
+                }
+                else if (m_rb.velocity.magnitude > m_status.GetPlayerStatusData().GetMaxSpeed())
+                {
+                    m_rb.velocity = m_rb.velocity.normalized * m_status.GetPlayerStatusData().GetMaxSpeed();
+                }
+                else
+                {
+                    m_rb.velocity = dir * m_status.GetPlayerStatusData().GetMoveSpeed();
+                }
             }
             else
             {
                 m_rb.velocity = Vector3.zero;
-            }
-
-            if (m_isWalking)
-            {
-                m_rb.velocity = m_rb.velocity.normalized * m_status.GetPlayerStatusData().GetWalkSpeed();
-            }
-            else if (m_rb.velocity.magnitude > m_status.GetPlayerStatusData().GetMaxSpeed())
-            {
-                m_rb.velocity = m_rb.velocity.normalized * m_status.GetPlayerStatusData().GetMaxSpeed();
             }
 
             m_anim.SetFloat("Speed", m_rb.velocity.magnitude);
