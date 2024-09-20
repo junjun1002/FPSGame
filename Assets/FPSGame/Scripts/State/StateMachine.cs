@@ -23,7 +23,7 @@ namespace FPS
                         PreviousState = m_currentState;
                     }
                     m_currentState = value;
-                    m_currentState.OnExecute(owner);
+                    m_currentState.OnEnter(owner);
                 }
             }
         }

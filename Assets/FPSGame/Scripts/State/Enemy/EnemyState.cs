@@ -18,6 +18,12 @@ namespace FPS
         private IState<EnemyBase> patrolState = new Patrol();
         public IState<EnemyBase> PatrolState { get => patrolState; }
 
+        /// <summary>
+        /// 追跡ステート
+        /// </summary>
+        private IState<EnemyBase> chaseState = new Chase();
+        public IState<EnemyBase> ChaseState { get => chaseState; }
+
         #endregion
 
         /// <summary>
@@ -25,8 +31,6 @@ namespace FPS
         /// </summary>
         private void Awake()
         {
-            DontDestroyOnLoad(this);
-            
             m_enemyBase = GetComponent<EnemyBase>();
 
             if (m_enemyBase == null)

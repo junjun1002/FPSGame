@@ -2,30 +2,28 @@ using System.Collections;
 using UnityEngine;
 
 namespace FPS
-{ 
+{
     /// <summary>
     /// 巡回のステート
     /// </summary>
     public class Patrol : IState<EnemyBase>
     {
-        private EnemyBase m_enemyBase;
-
         private Coroutine m_tagetPointMonitoring;
 
         /// <summary>
         /// 巡回中の処理
         /// </summary>
         /// <param name="owner"></param>
-        public void OnExecute(EnemyBase owner)
+        public void OnEnter(EnemyBase owner)
         {
             Debug.Log("Patrol");
-            m_enemyBase = owner;
             owner.GetNavMeshAgent().speed = owner.GetEnemyData().GetPatrolSpeed();
+            owner.GetNavMeshAgent().stoppingDistance = 0f;
             owner.Patroling();
 
-            if(m_tagetPointMonitoring == null)
+            if (m_tagetPointMonitoring == null)
             {
-                m_tagetPointMonitoring = owner.StartCoroutine(TagetPointMonitoring());
+                m_tagetPointMonitoring = owner.StartCoroutine(TagetPointMonitoring(owner));
             }
         }
 
@@ -35,6 +33,7 @@ namespace FPS
         /// <param name="owner"></param>
         public void OnExit(EnemyBase owner)
         {
+            Debug.Log("Patrol Exit");
             owner.StopCoroutine(m_tagetPointMonitoring);
             m_tagetPointMonitoring = null;
         }
@@ -43,15 +42,15 @@ namespace FPS
         /// ターゲット地点の監視
         /// </summary>
         /// <returns></returns>
-        private IEnumerator TagetPointMonitoring()
+        private IEnumerator TagetPointMonitoring(EnemyBase owner)
         {
-            while(true)
+            while (true)
             {
                 // エージェントが現目標地点に近づいてきたら、
                 // 次の目標地点を選択します
-                if (!m_enemyBase.GetNavMeshAgent().pathPending && m_enemyBase.GetNavMeshAgent().remainingDistance < 0.5f)
+                if (!owner.GetNavMeshAgent().pathPending && owner.GetNavMeshAgent().remainingDistance < 0.5f)
                 {
-                    m_enemyBase.Patroling();
+                    owner.Patroling();
                 }
 
                 yield return null;

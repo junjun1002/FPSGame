@@ -3362,6 +3362,7 @@ GameObject:
   - component: {fileID: 5866666021526805123}
   - component: {fileID: 5866666021526805124}
   - component: {fileID: 5866666021526805125}
+  - component: {fileID: 5866666021526805126}
   m_Layer: 0
   m_Name: ShortEnemy
   m_TagString: Untagged
@@ -7962,6 +7963,7 @@ MonoBehaviour:
   m_enemyData: {fileID: 11400000, guid: eea7c2c5ec64906429eabc3dfcdf63b1, type: 2}
   m_anim: {fileID: 5866666021526805122}
   m_attackDecision: {fileID: 1907765857}
+  m_sightAngle: 45
   m_player: {fileID: 1603620904}
   m_patrolPoints:
   - {fileID: 192300849}
@@ -8001,6 +8003,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09c38046484eed645816f612e83d08b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &5866666021526805126
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132149544131138}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 5
+  m_Center: {x: 0, y: 1.65, z: 0}
 --- !u!4 &5901452235342959227
 Transform:
   m_ObjectHideFlags: 0

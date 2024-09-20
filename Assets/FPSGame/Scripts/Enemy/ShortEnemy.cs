@@ -26,7 +26,7 @@ namespace FPS
             m_anim.SetTrigger("Punch");
         }
 
-        protected override void MoveToPlayer()
+        public override void Chaseing()
         {
             m_agent.destination = m_player.transform.position;
             m_anim.SetFloat("Speed", m_agent.velocity.magnitude);

@@ -17,6 +17,9 @@ namespace FPS
         /// <summary>ナビメッシュエージェント</summary>
         protected NavMeshAgent m_agent;
 
+        /// <summary>視界角度</summary>
+        [SerializeField] float m_sightAngle = 45.0f;
+
         [SerializeField] protected GameObject m_player;
 
         [SerializeField] Transform[] m_patrolPoints;
@@ -24,6 +27,8 @@ namespace FPS
 
         /// <summary>現在のHP</summary>
         private int m_currentHP;
+
+        private EnemyState m_enemyState;
 
         private void Awake()
         {
@@ -34,6 +39,36 @@ namespace FPS
             if (m_agent == null)
             {
                 Debug.LogError("NavMeshAgent component not found.");
+            }
+
+            m_enemyState = GetComponent<EnemyState>();
+
+            if (m_enemyState == null)
+            {
+                Debug.LogError("EnemyState component not found.");
+            }
+        }
+
+        private void OnTriggerStay(Collider other)
+        {
+            if(other.gameObject.TryGetComponent<PlayerController>(out var player))
+            {
+                Vector3 posDelta = other.transform.position - transform.position;
+                float targetAngle = Vector3.Angle(transform.forward, posDelta);
+                if (targetAngle < m_sightAngle)
+                {
+                    if (Physics.Raycast(transform.position, new Vector3(posDelta.x, 0f, posDelta.z), out RaycastHit hit))
+                    {
+                        if (hit.collider == other)
+                        {
+                            m_enemyState.stateMachine.ChangeMachine(m_enemyState.ChaseState);
+                        }
+                        else
+                        {
+                            m_enemyState.stateMachine.ChangeMachine(m_enemyState.PatrolState);
+                        }
+                    }
+                }
             }
         }
 
@@ -117,6 +152,6 @@ namespace FPS
         /// <summary>
         /// プレイヤーに向かって移動
         /// </summary>
-        protected virtual void MoveToPlayer() { }
+        public virtual void Chaseing() { }
     }
 }
