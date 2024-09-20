@@ -13,10 +13,12 @@ namespace FPS
                 Attack();
             }
 
-            if (!m_agent.isStopped)
-            {
-                MoveToPlayer();
-            }
+            //if (!m_agent.isStopped)
+            //{
+            //    MoveToPlayer();
+            //}
+
+            m_anim.SetFloat("Speed", m_agent.velocity.magnitude);
         }
 
         protected override void Attack()

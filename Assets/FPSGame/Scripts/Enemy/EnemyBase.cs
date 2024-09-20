@@ -10,9 +10,6 @@ namespace FPS
         /// <summary>敵のステータスデータ</summary>
         [SerializeField] EnemyStatusData m_enemyData;
 
-        /// <summary>敵のステータスデータを取得</summary>
-        public EnemyStatusData GetEnemyData() { return m_enemyData; }
-
         /// <summary>敵のアニメーター</summary>
         [SerializeField] protected Animator m_anim;
         /// <summary>攻撃判定</summary>
@@ -21,6 +18,9 @@ namespace FPS
         protected NavMeshAgent m_agent;
 
         [SerializeField] protected GameObject m_player;
+
+        [SerializeField] Transform[] m_patrolPoints;
+        private int m_currentPatrolPointIndex = 0;
 
         /// <summary>現在のHP</summary>
         private int m_currentHP;
@@ -83,6 +83,19 @@ namespace FPS
             m_attackDecision.SetActive(false);
         }
 
+        public void Patroling()
+        {
+            // 地点がなにも設定されていないときに返します
+            if (m_patrolPoints.Length == 0)
+                return;
+
+            // エージェントが現在設定された目標地点に行くように設定します
+            m_agent.destination = m_patrolPoints[m_currentPatrolPointIndex].position;
+            // 配列内の次の位置を目標地点に設定し、
+            // 必要ならば出発地点にもどります
+            m_currentPatrolPointIndex = (m_currentPatrolPointIndex + 1) % m_patrolPoints.Length;
+        }
+
         /// <summary>
         /// 追跡開始
         /// </summary>
@@ -90,6 +103,12 @@ namespace FPS
         {
             m_agent.isStopped = false;
         }
+
+        /// <summary>エージェントを取得</summary>
+        public NavMeshAgent GetNavMeshAgent() { return m_agent; }
+
+        /// <summary>敵のステータスデータを取得</summary>
+        public EnemyStatusData GetEnemyData() { return m_enemyData; }
 
         /// <summary>
         /// 攻撃

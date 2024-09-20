@@ -123,10 +123,12 @@ namespace FPS
         /// <param name="collision"></param>
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.tag == "Ground")
+            if(!m_isGround)
             {
-                Debug.Log("Grounded");
-                m_isGround = true;
+                if (collision.gameObject.tag == "Ground")
+                {
+                    m_isGround = true;
+                }
             }
         }
 
@@ -270,7 +272,6 @@ namespace FPS
             Vector2 move = context.ReadValue<Vector2>();
             m_horizontal = move.x;
             m_vertical = move.y;
-            Debug.Log("Move: " + move);
         }
 
         /// <summary>
@@ -282,12 +283,10 @@ namespace FPS
             if (context.started)
             {
                 m_isWalking = true;
-                Debug.Log("Walk started");
             }
             else if (context.canceled)
             {
                 m_isWalking = false;
-                Debug.Log("Walk canceled");
             }
         }
 
@@ -311,8 +310,6 @@ namespace FPS
 
             // カメラのピッチ角度を適用
             m_camera.transform.localEulerAngles = new Vector3(m_currentPitch, 0.0f, 0.0f);
-
-            Debug.Log("Look: " + look);
         }
 
         /// <summary>
@@ -324,7 +321,6 @@ namespace FPS
             if (!m_isGround) return;
             if (context.started)
             {
-                Debug.Log("Jump");
                 m_rb.AddForce(Vector3.up * m_status.GetPlayerStatusData().GetJumpForce(), ForceMode.Impulse);
                 m_isGround = false;
             }
