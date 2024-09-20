@@ -17,6 +17,12 @@ namespace FPS
         public void OnEnter(EnemyBase owner)
         {
             Debug.Log("Patrol");
+
+            if (owner.GetNavMeshAgent() == null)
+            {
+                Debug.LogError("NavMeshAgent component not found.");
+            }
+
             owner.GetNavMeshAgent().speed = owner.GetEnemyData().GetPatrolSpeed();
             owner.GetNavMeshAgent().stoppingDistance = 0f;
             owner.Patroling();

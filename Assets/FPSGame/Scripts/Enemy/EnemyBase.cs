@@ -19,10 +19,11 @@ namespace FPS
 
         /// <summary>視界角度</summary>
         [SerializeField] float m_sightAngle = 45.0f;
-
+        /// <summary>プレイヤー</summary>
         [SerializeField] protected GameObject m_player;
-
+        /// <summary>巡回地点</summary>
         [SerializeField] Transform[] m_patrolPoints;
+        /// <summary>現在の巡回地点のインデックス</summary>
         private int m_currentPatrolPointIndex = 0;
 
         /// <summary>現在のHP</summary>
@@ -51,7 +52,7 @@ namespace FPS
 
         private void OnTriggerStay(Collider other)
         {
-            if(other.gameObject.TryGetComponent<PlayerController>(out var player))
+            if (other.gameObject.TryGetComponent<PlayerController>(out var player))
             {
                 Vector3 posDelta = other.transform.position - transform.position;
                 float targetAngle = Vector3.Angle(transform.forward, posDelta);
@@ -62,6 +63,10 @@ namespace FPS
                         if (hit.collider == other)
                         {
                             m_enemyState.stateMachine.ChangeMachine(m_enemyState.ChaseState);
+                        }
+                        else if(hit.collider == null)
+                        {
+                            m_enemyState.stateMachine.ChangeMachine(m_enemyState.PatrolState);
                         }
                         else
                         {

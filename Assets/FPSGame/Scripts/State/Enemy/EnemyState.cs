@@ -28,8 +28,10 @@ namespace FPS
 
         /// <summary>
         /// ‰Šú‰»ˆ—
+        /// EnemyBase‚Ì‰Šú‰»ˆ—‚ğ‘Ò‚¿‚½‚¢‚Ì‚ÅStart‚Å‰Šú‰»
+        /// Awake‚¾‚ÆEnemyBase‚Ì‰Šú‰»ˆ—‚ªI‚í‚Á‚Ä‚¢‚È‚¢‚½‚ß
         /// </summary>
-        private void Awake()
+        private void Start()
         {
             m_enemyBase = GetComponent<EnemyBase>();
 
