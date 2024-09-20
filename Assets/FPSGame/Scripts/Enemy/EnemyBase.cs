@@ -158,6 +158,6 @@ namespace FPS
         /// <summary>
         /// ƒvƒŒƒCƒ„[‚ÉŒü‚©‚Á‚ÄˆÚ“®
         /// </summary>
-        public virtual void Chaseing() { }
+        public virtual void Chasing() { }
     }
 }

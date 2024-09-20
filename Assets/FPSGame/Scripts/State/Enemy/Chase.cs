@@ -42,7 +42,7 @@ namespace FPS
         {
             while (true)
             {
-                owner.Chaseing();
+                owner.Chasing();
                 yield return null;
             }
         }
