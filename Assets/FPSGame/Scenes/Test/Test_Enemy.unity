@@ -3363,7 +3363,7 @@ GameObject:
   - component: {fileID: 5866666021526805124}
   - component: {fileID: 5866666021526805125}
   - component: {fileID: 5866666021526805126}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ShortEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}

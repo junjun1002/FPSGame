@@ -79,6 +79,7 @@ namespace FPS
         public void TakeDamage(int playerPower, string hitPart)
         {
             m_agent.isStopped = true;
+            Debug.Log("敵にヒットした部位：" + hitPart);
 
             int damage = playerPower;
             // ヒットした部位によってダメージを変更

@@ -214,8 +214,6 @@ namespace FPS
                 {
                     enemy.TakeDamage(m_status.GetPlayerStatusData().GetPower(), hit.collider.gameObject.name);
                 }
-
-                // hit.collider.gameObject.GetComponent<Health>()?.TakeDamage(damage);
             }
             else
             {
@@ -390,7 +388,6 @@ namespace FPS
             m_anim.SetIKRotationWeight(AvatarIKGoal.RightHand, 1.0f);
             m_anim.SetIKPosition(AvatarIKGoal.RightHand, m_rightHandPos.transform.position);
             m_anim.SetIKRotation(AvatarIKGoal.RightHand, m_rightHandPos.transform.rotation);
-
 
             // e‚Ì‰ñ“]‚ğƒJƒƒ‰‚Ì’†‰›‚É‡‚í‚¹‚é
             m_gun.transform.rotation = Quaternion.LookRotation(ikTarget - m_muzzle.transform.position);
