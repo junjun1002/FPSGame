@@ -1,13 +1,15 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace FPS
 {
+    /// <summary>
+    /// 敵のステータスデータ
+    /// </summary>
     [Serializable, CreateAssetMenu(fileName = "EnemyStatusData", menuName = "Data/EnemyStatus")]
     public class EnemyStatusData : ScriptableObject
     {
+        // 敵のステータス
         [SerializeField, Header("最大HP")] int maxHP = 100;
         [SerializeField, Header("攻撃力")] int power = 10;
         [SerializeField, Header("巡回速度")] float patrolSpeed = 2.0f;

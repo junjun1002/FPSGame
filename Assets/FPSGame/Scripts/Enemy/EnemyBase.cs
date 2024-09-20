@@ -1,10 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace FPS
 {
+    /// <summary>
+    /// 敵の基底クラス
+    /// </summary>
     public class EnemyBase : MonoBehaviour
     {
         /// <summary>敵のステータスデータ</summary>
@@ -31,6 +32,7 @@ namespace FPS
 
         private EnemyState m_enemyState;
 
+        /// <summary>初期化処理</summary>
         private void Awake()
         {
             m_currentHP = m_enemyData.GetMaxHP();
@@ -50,10 +52,16 @@ namespace FPS
             }
         }
 
+        /// <summary>
+        /// 視界にプレイヤーがいるかの確認
+        /// </summary>
+        /// <param name="other"></param>
         private void OnTriggerStay(Collider other)
         {
+            // 攻撃中は追跡しない
             if (m_enemyState.stateMachine.CurrentState == m_enemyState.AttackState) return;
 
+            // プレイヤーが視界に入ったら追跡ステートに変更
             if (other.gameObject.TryGetComponent<PlayerController>(out var player))
             {
                 Vector3 posDelta = other.transform.position - transform.position;
@@ -177,6 +185,7 @@ namespace FPS
         /// <summary>敵のステータスデータを取得</summary>
         public EnemyStatusData GetEnemyData() { return m_enemyData; }
 
+        /// <summary>敵のステートを取得</summary>
         public EnemyState GetEnemyState() { return m_enemyState; }
 
         /// <summary>

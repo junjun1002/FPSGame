@@ -1,20 +1,24 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace FPS
 {
+    /// <summary>
+    /// プレイヤーの操作を制御するクラス
+    /// </summary>
     public class PlayerController : MonoBehaviour
     {
         /// <summary>
-        /// カメラの垂直方向の回転角度の制限
+        /// カメラの垂直方向の回転角度の下限
         /// </summary>
         [SerializeField] float m_minPitch = -45.0f;
+        /// <summary>
+        /// カメラの垂直方向の回転角度の上限
+        /// </summary>
         [SerializeField] float m_maxPitch = 45.0f;
 
+        /// <summary>現在のピッチ角度</summary>
         private float m_currentPitch = 0.0f;
 
         /// <summary>プレイヤーのカメラ</summary>
@@ -40,15 +44,21 @@ namespace FPS
         /// <summary>マウスの感度を調整するための係数</summary>
         [SerializeField] float m_sensitivity = 0.1f;
 
+        /// <summary>プレイヤーの入力</summary>
         private PlayerInput m_playerInput;
+        /// <summary>プレイヤーのRigidbody</summary>
         private Rigidbody m_rb;
+        /// <summary>プレイヤーのステータス</summary>
         private PlayerStatus m_status;
         /// <summary>射撃のラインレンダラー</summary>
         private LineRenderer m_lineRenderer;
 
+        /// <summary>水平方向の入力</summary>
         private float m_horizontal;
+        /// <summary>垂直方向の入力</summary>
         private float m_vertical;
 
+        /// <summary>ラインを消すコルーチン</summary>
         private Coroutine m_clearLine;
 
         /// <summary>プレイヤーが歩いているかどうか</summary>
@@ -56,6 +66,9 @@ namespace FPS
         /// <summary>プレイヤーが地面にいるかどうか</summary>
         private bool m_isGround = true;
 
+        /// <summary>
+        /// 初期化処理
+        /// </summary>
         private void Awake()
         {
             Cursor.visible = false;
@@ -94,6 +107,7 @@ namespace FPS
 
         private void Update()
         {
+            // カーソルの表示を切り替える
             if (Cursor.visible)
             {
                 if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -132,6 +146,10 @@ namespace FPS
             }
         }
 
+        /// <summary>
+        /// プレイヤーが敵の攻撃を受けたときの処理
+        /// </summary>
+        /// <param name="other"></param>
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.tag == "EnemyAttack")

@@ -24,6 +24,9 @@ namespace FPS
         private IState<EnemyBase> chaseState = new Chase();
         public IState<EnemyBase> ChaseState { get => chaseState; }
 
+        /// <summary>
+        /// 攻撃ステート
+        /// </summary>
         private IState<EnemyBase> attackState = new Attack();
         public IState<EnemyBase> AttackState { get => attackState; }
 

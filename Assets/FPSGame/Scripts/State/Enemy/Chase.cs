@@ -4,14 +4,14 @@ using UnityEngine;
 namespace FPS
 {
     /// <summary>
-    /// 巡回のステート
+    /// 追跡のステート
     /// </summary>
     public class Chase : IState<EnemyBase>
     {
         private Coroutine m_chaseTarget;
 
         /// <summary>
-        /// 巡回中の処理
+        /// 追跡中の処理
         /// </summary>
         /// <param name="owner"></param>
         public void OnEnter(EnemyBase owner)
@@ -24,7 +24,7 @@ namespace FPS
         }
 
         /// <summary>
-        /// 巡回ステートの終了処理
+        /// 追跡ステートの終了処理
         /// </summary>
         /// <param name="owner"></param>
         public void OnExit(EnemyBase owner)

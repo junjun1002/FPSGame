@@ -1,4 +1,3 @@
-using FPS;
 using UnityEngine;
 
 namespace FPS

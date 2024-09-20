@@ -4,7 +4,7 @@ using UnityEngine;
 namespace FPS
 {
     /// <summary>
-    /// 巡回のステート
+    /// 攻撃のステート
     /// </summary>
     public class Attack : IState<EnemyBase>
     {
@@ -41,7 +41,7 @@ namespace FPS
         }
 
         /// <summary>
-        /// ターゲットの追跡
+        /// 攻撃
         /// </summary>
         /// <param name="owner"></param>
         /// <returns></returns>

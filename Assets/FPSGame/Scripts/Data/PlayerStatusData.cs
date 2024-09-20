@@ -1,13 +1,15 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace FPS
 {
+    /// <summary>
+    /// プレイヤーのステータスデータ
+    /// </summary>
     [Serializable, CreateAssetMenu(fileName = "PlayerStatusData", menuName = "Data/PlayerStatus")]
     public class PlayerStatusData : ScriptableObject
     {
+        // プレイヤーのステータス
         [SerializeField, Header("最大HP")] int maxHP = 100;
         [SerializeField, Header("攻撃力")] int power = 10;
         [SerializeField, Header("プレイヤーの最大弾数")] int maxBulletCount = 25;

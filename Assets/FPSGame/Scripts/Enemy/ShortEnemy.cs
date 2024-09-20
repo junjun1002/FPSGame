@@ -1,31 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace FPS
 {
+    /// <summary>
+    /// 近距離の敵クラス
+    /// </summary>
     public class ShortEnemy : EnemyBase
     {
         public void Update()
         {
-            if (Input.GetKeyDown(KeyCode.J))
-            {
-                Attack();
-            }
-
-            //if (!m_agent.isStopped)
-            //{
-            //    MoveToPlayer();
-            //}
-
             m_anim.SetFloat("Speed", m_agent.velocity.magnitude);
         }
 
+        /// <summary>
+        /// 攻撃
+        /// </summary>
         public override void Attack()
         {
             m_anim.SetTrigger("Punch");
         }
 
+        /// <summary>
+        /// プレイヤーを追跡
+        /// </summary>
         public override void Chasing()
         {
             m_agent.destination = m_player.transform.position;

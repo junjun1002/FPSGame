@@ -5,24 +5,29 @@ using UnityEngine.UI;
 
 namespace FPS
 {
+    /// <summary>
+    /// プレイヤーのステータスクラス
+    /// </summary>
     public class PlayerStatus : MonoBehaviour
     {
-
         /// <summary>Playerが死亡したときのイベント</summary>
         public Action OnPlayerDeadAction { get; set; }
 
+        /// <summary>プレイヤーのステータスデータ</summary>
         [SerializeField] PlayerStatusData playerStatusData = default;
 
-        public PlayerStatusData GetPlayerStatusData() { return playerStatusData; }
-
+        /// <summary>HPバー</summary>
         [SerializeField] Slider m_hpBar;
+        /// <summary>弾数バー</summary>
         [SerializeField] Slider m_bulletCount;
+        /// <summary>弾数テキスト</summary>
         [SerializeField] TextMeshProUGUI m_bulletCountText;
 
+        /// <summary>現在のHP</summary>
         private int m_currentHP;
 
+        /// <summary>現在の弾数</summary>
         private int m_currentBulletCount;
-
         public int CurrentBulletCount
         {
             get => m_currentBulletCount;
@@ -38,6 +43,9 @@ namespace FPS
             }
         }
 
+        /// <summary>
+        /// 初期化処理
+        /// </summary>
         private void Awake()
         {
             m_currentHP = playerStatusData.GetMaxHP();
@@ -61,9 +69,15 @@ namespace FPS
             }
         }
 
+        /// <summary>
+        /// プレイヤーが死亡したときの処理
+        /// </summary>
         private void OnPlayerDead()
         {
             OnPlayerDeadAction?.Invoke();
         }
+
+        /// <summary>プレイヤーのステータスデータを取得する</summary>
+        public PlayerStatusData GetPlayerStatusData() { return playerStatusData; }
     }
 }
