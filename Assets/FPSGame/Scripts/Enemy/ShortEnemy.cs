@@ -21,7 +21,7 @@ namespace FPS
             m_anim.SetFloat("Speed", m_agent.velocity.magnitude);
         }
 
-        protected override void Attack()
+        public override void Attack()
         {
             m_anim.SetTrigger("Punch");
         }

@@ -17,20 +17,13 @@ namespace FPS
         public void OnEnter(EnemyBase owner)
         {
             Debug.Log("Patrol");
-
-            if (owner.GetNavMeshAgent() == null)
-            {
-                Debug.LogError("NavMeshAgent component not found.");
-            }
+            owner.GetNavMeshAgent().isStopped = false;
 
             owner.GetNavMeshAgent().speed = owner.GetEnemyData().GetPatrolSpeed();
             owner.GetNavMeshAgent().stoppingDistance = 0f;
             owner.Patroling();
 
-            if (m_tagetPointMonitoring == null)
-            {
-                m_tagetPointMonitoring = owner.StartCoroutine(TagetPointMonitoring(owner));
-            }
+            m_tagetPointMonitoring = owner.StartCoroutine(TagetPointMonitoring(owner));
         }
 
         /// <summary>
@@ -41,7 +34,6 @@ namespace FPS
         {
             Debug.Log("Patrol Exit");
             owner.StopCoroutine(m_tagetPointMonitoring);
-            m_tagetPointMonitoring = null;
         }
 
         /// <summary>
@@ -52,6 +44,7 @@ namespace FPS
         {
             while (true)
             {
+                Debug.Log(owner.GetNavMeshAgent().isStopped);
                 // エージェントが現目標地点に近づいてきたら、
                 // 次の目標地点を選択します
                 if (!owner.GetNavMeshAgent().pathPending && owner.GetNavMeshAgent().remainingDistance < 0.5f)

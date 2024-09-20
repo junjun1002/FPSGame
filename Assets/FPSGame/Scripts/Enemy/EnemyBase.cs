@@ -52,6 +52,8 @@ namespace FPS
 
         private void OnTriggerStay(Collider other)
         {
+            if (m_enemyState.stateMachine.CurrentState == m_enemyState.AttackState) return;
+
             if (other.gameObject.TryGetComponent<PlayerController>(out var player))
             {
                 Vector3 posDelta = other.transform.position - transform.position;
@@ -124,16 +126,18 @@ namespace FPS
             m_attackDecision.SetActive(false);
         }
 
+        /// <summary>
+        /// 巡回
+        /// </summary>
         public void Patroling()
         {
             // 地点がなにも設定されていないときに返します
             if (m_patrolPoints.Length == 0)
                 return;
 
-            // エージェントが現在設定された目標地点に行くように設定します
+            // エージェントが設定された目標地点に行くように設定
             m_agent.destination = m_patrolPoints[m_currentPatrolPointIndex].position;
-            // 配列内の次の位置を目標地点に設定し、
-            // 必要ならば出発地点にもどります
+            // 配列内の次の位置を目標地点に設定し、次がなければ最初に戻す
             m_currentPatrolPointIndex = (m_currentPatrolPointIndex + 1) % m_patrolPoints.Length;
         }
 
@@ -145,16 +149,40 @@ namespace FPS
             m_agent.isStopped = false;
         }
 
+        /// <summary>
+        /// 滑らかにターゲットの方向を向くように
+        /// </summary>
+        public void LookAtTarget(Transform target)
+        {
+            // ターゲット方向のベクトルを取得
+            Vector3 relativePos = target.position - this.transform.position;
+            // 方向を、回転情報に変換
+            Quaternion rotation = Quaternion.LookRotation(relativePos);
+            // 現在の回転情報と、ターゲット方向の回転情報を補完する
+            transform.rotation = Quaternion.Slerp(this.transform.rotation, rotation, 0.1f);
+        }
+
+        /// <summary>
+        /// ターゲットまでの距離を取得
+        /// </summary>
+        /// <returns></returns>
+        public float GetTargetDistance()
+        {
+            return Vector3.Distance(transform.position, m_player.transform.position);
+        }
+
         /// <summary>エージェントを取得</summary>
         public NavMeshAgent GetNavMeshAgent() { return m_agent; }
 
         /// <summary>敵のステータスデータを取得</summary>
         public EnemyStatusData GetEnemyData() { return m_enemyData; }
 
+        public EnemyState GetEnemyState() { return m_enemyState; }
+
         /// <summary>
         /// 攻撃
         /// </summary>
-        protected virtual void Attack() { }
+        public virtual void Attack() { }
         /// <summary>
         /// プレイヤーに向かって移動
         /// </summary>

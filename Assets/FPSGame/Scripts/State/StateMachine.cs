@@ -28,6 +28,7 @@ namespace FPS
             }
         }
 
+        /// <summary>前のステート</summary>
         private IState<T> m_previousState;
         public IState<T> PreviousState
         {
