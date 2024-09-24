@@ -8,6 +8,8 @@ namespace FPS
     /// </summary>
     public class Attack : IState<EnemyBase>
     {
+        bool m_isAttacking;
+
         private Coroutine m_attacking;
 
         /// <summary>
@@ -43,6 +45,8 @@ namespace FPS
         public void Update(EnemyBase owner)
         {
             owner.LookAtPlayer();
+            AnimatorStateInfo stateInfo = owner.GetAnimator().GetCurrentAnimatorStateInfo(0);
+            m_isAttacking = stateInfo.IsName("Punch"); 
         }
 
         /// <summary>
@@ -56,6 +60,13 @@ namespace FPS
             {
                 if (owner.GetNavMeshAgent().stoppingDistance < owner.GetTargetDistance())
                 {
+                    // 攻撃アニメーションが再生中なら、アニメーションが終了するまで待つ
+                    if (m_isAttacking)
+                    {
+                        Debug.Log("アニメションの再生が終わってからパトロールステートに遷移");
+                        yield return new WaitUntil(() => !m_isAttacking);
+                        Debug.Log("アニメションの再生終了");
+                    }
                     owner.GetEnemyState().stateMachine.ChangeMachine(owner.GetEnemyState().PatrolState);
                 }
                 else

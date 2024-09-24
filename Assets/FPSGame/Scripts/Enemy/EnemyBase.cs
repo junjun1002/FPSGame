@@ -198,6 +198,9 @@ namespace FPS
         /// <summary>エージェントを取得</summary>
         public NavMeshAgent GetNavMeshAgent() { return m_agent; }
 
+        /// <summary>アニメーターを取得</summary>
+        public Animator GetAnimator() { return m_anim; }
+
         /// <summary>敵のステータスデータを取得</summary>
         public EnemyStatusData GetEnemyData() { return m_enemyData; }
 

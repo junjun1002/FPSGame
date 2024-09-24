@@ -60,6 +60,7 @@ namespace FPS
             while (true)
             {
                 CurrentState?.Update(owner);
+                Debug.Log(CurrentState);
                 yield return null;
             }
         }

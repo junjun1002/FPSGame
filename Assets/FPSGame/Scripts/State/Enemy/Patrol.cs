@@ -19,7 +19,6 @@ namespace FPS
 
             owner.GetNavMeshAgent().speed = owner.GetEnemyData().GetPatrolSpeed();
             owner.GetNavMeshAgent().stoppingDistance = 0f;
-            owner.Patroling();
         }
 
         /// <summary>
