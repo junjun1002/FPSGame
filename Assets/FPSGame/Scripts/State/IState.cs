@@ -20,5 +20,11 @@ namespace FPS
         /// </summary>
         /// <param name="owner"></param>
         void OnExit(T owner);
+
+        /// <summary>
+        /// –ˆƒtƒŒ[ƒ€ŒÄ‚Î‚ê‚éŠÖ”
+        /// </summary>
+        /// <param name="owner"></param>
+        void Update(T owner);
     }
 }

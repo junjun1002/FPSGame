@@ -59,7 +59,7 @@ namespace FPS
         /// <exception cref="System.NotImplementedException"></exception>
         public void CollisionEvent(EventSystemInGame eventSystemInGame)
         {
-            if(m_enemyState.stateMachine.CurrentState == m_enemyState.PatrolState)
+            if (m_enemyState.stateMachine.CurrentState == m_enemyState.PatrolState)
             {
                 m_enemyState.stateMachine.ChangeMachine(m_enemyState.ChaseState);
             }
@@ -87,7 +87,7 @@ namespace FPS
                         {
                             m_enemyState.stateMachine.ChangeMachine(m_enemyState.ChaseState);
                         }
-                        else if(hit.collider == null)
+                        else if (hit.collider == null)
                         {
                             m_enemyState.stateMachine.ChangeMachine(m_enemyState.PatrolState);
                         }
@@ -173,10 +173,10 @@ namespace FPS
         /// <summary>
         /// 滑らかにターゲットの方向を向くように
         /// </summary>
-        public void LookAtTarget(Transform target)
+        public void LookAtPlayer()
         {
             // ターゲット方向のベクトルを取得
-            Vector3 relativePos = target.position - this.transform.position;
+            Vector3 relativePos = m_player.transform.position - this.transform.position;
             // 方向を、回転情報に変換
             Quaternion rotation = Quaternion.LookRotation(relativePos);
             // 現在の回転情報と、ターゲット方向の回転情報を補完する

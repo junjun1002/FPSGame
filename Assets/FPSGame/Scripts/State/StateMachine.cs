@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace FPS
@@ -51,6 +52,16 @@ namespace FPS
         {
             this.owner = owner;
             CurrentState = initState;
+            owner.StartCoroutine(Update());
+        }
+
+        private IEnumerator Update()
+        {
+            while (true)
+            {
+                CurrentState?.Update(owner);
+                yield return null;
+            }
         }
 
         /// <summary>

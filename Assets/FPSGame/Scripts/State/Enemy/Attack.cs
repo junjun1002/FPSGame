@@ -40,6 +40,11 @@ namespace FPS
             }
         }
 
+        public void Update(EnemyBase owner)
+        {
+            owner.LookAtPlayer();
+        }
+
         /// <summary>
         /// çUåÇ
         /// </summary>

@@ -8,8 +8,6 @@ namespace FPS
     /// </summary>
     public class Chase : IState<EnemyBase>
     {
-        private Coroutine m_chaseTarget;
-
         /// <summary>
         /// 追跡中の処理
         /// </summary>
@@ -19,8 +17,6 @@ namespace FPS
             Debug.Log("Chase");
             owner.GetNavMeshAgent().speed = owner.GetEnemyData().GetChaseSpeed();
             owner.GetNavMeshAgent().stoppingDistance = 2.5f;
-
-            m_chaseTarget = owner.StartCoroutine(ChaseTarget(owner));
         }
 
         /// <summary>
@@ -30,25 +26,23 @@ namespace FPS
         public void OnExit(EnemyBase owner)
         {
             Debug.Log("Chase Exit");
-            owner.StopCoroutine(m_chaseTarget);
+        }
+
+        public void Update(EnemyBase owner)
+        {
+            ChaseTarget(owner);
         }
 
         /// <summary>
         /// ターゲットの追跡
         /// </summary>
         /// <param name="owner"></param>
-        /// <returns></returns>
-        private IEnumerator ChaseTarget(EnemyBase owner)
+        private void ChaseTarget(EnemyBase owner)
         {
-            while (true)
+            owner.Chasing();
+            if (owner.GetNavMeshAgent().stoppingDistance >= owner.GetTargetDistance())
             {
-                Debug.Log(owner.GetNavMeshAgent().isStopped);
-                owner.Chasing();
-                if (owner.GetNavMeshAgent().stoppingDistance >= owner.GetTargetDistance())
-                {
-                    owner.GetEnemyState().stateMachine.ChangeMachine(owner.GetEnemyState().AttackState);
-                }
-                yield return null;
+                owner.GetEnemyState().stateMachine.ChangeMachine(owner.GetEnemyState().AttackState);
             }
         }
     }
