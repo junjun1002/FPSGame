@@ -312,6 +312,8 @@ namespace FPS
             Vector2 move = context.ReadValue<Vector2>();
             m_horizontal = move.x;
             m_vertical = move.y;
+            m_anim.SetFloat("VelocityX", m_horizontal);
+            m_anim.SetFloat("VelocityY", m_vertical);
         }
 
         /// <summary>
