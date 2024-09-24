@@ -81,7 +81,7 @@ namespace FPS
                 float targetAngle = Vector3.Angle(transform.forward, posDelta);
                 if (targetAngle < m_sightAngle)
                 {
-                    if (Physics.Raycast(transform.position, new Vector3(posDelta.x, 0f, posDelta.z), out RaycastHit hit))
+                    if (Physics.Raycast(transform.position, posDelta, out RaycastHit hit))
                     {
                         if (hit.collider == other)
                         {
