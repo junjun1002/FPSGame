@@ -7,7 +7,7 @@ namespace FPS
     /// <summary>
     /// プレイヤーの操作を制御するクラス
     /// </summary>
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : EventReceiver<PlayerController>
     {
         /// <summary>
         /// カメラの垂直方向の回転角度の下限
@@ -227,10 +227,15 @@ namespace FPS
                 // ラインを消すコルーチンを開始
                 m_clearLine = StartCoroutine(ClearLineAfterSeconds(0.05f)); // 0.05秒後にラインを消す
 
-                // ヒットしたオブジェクトが敵であればダメージを与える
-                if (hit.transform.root.gameObject.TryGetComponent<EnemyBase>(out var enemy))
+                // ヒットしたオブジェクトがIEventCollisionを実装していればイベントを発生させる
+                if (hit.transform.root.gameObject.TryGetComponent<IEventCollision>(out var eventCollision))
                 {
-                    enemy.TakeDamage(m_status.GetPlayerStatusData().GetPower(), hit.collider.gameObject.name);
+                    eventCollision.CollisionEvent(m_eventSystemInGame);
+                    // ヒットしたオブジェクトが敵であればダメージを与える
+                    if (hit.transform.root.gameObject.TryGetComponent<EnemyBase>(out var enemy))
+                    {
+                        enemy.TakeDamage(m_status.GetPlayerStatusData().GetPower(), hit.collider.gameObject.name);
+                    }
                 }
             }
             else
@@ -418,6 +423,16 @@ namespace FPS
             m_anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1.0f);
             m_anim.SetIKPosition(AvatarIKGoal.LeftHand, m_leftHandPos.transform.position);
             m_anim.SetIKRotation(AvatarIKGoal.LeftHand, m_leftHandPos.transform.rotation);
+        }
+
+        protected override void OnEnable()
+        {
+
+        }
+
+        protected override void OnDisable()
+        {
+
         }
     }
 }

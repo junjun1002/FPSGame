@@ -6,7 +6,7 @@ namespace FPS
     /// <summary>
     /// 敵の基底クラス
     /// </summary>
-    public class EnemyBase : MonoBehaviour
+    public class EnemyBase : MonoBehaviour, IEventCollision
     {
         /// <summary>敵のステータスデータ</summary>
         [SerializeField] EnemyStatusData m_enemyData;
@@ -49,6 +49,19 @@ namespace FPS
             if (m_enemyState == null)
             {
                 Debug.LogError("EnemyState component not found.");
+            }
+        }
+
+        /// <summary>
+        /// ゲーム中の衝突イベント
+        /// </summary>
+        /// <param name="eventSystemInGame"></param>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public void CollisionEvent(EventSystemInGame eventSystemInGame)
+        {
+            if(m_enemyState.stateMachine.CurrentState == m_enemyState.PatrolState)
+            {
+                m_enemyState.stateMachine.ChangeMachine(m_enemyState.ChaseState);
             }
         }
 
