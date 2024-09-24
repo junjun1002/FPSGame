@@ -22,6 +22,12 @@ namespace FPS
         [SerializeField] float m_sightAngle = 45.0f;
         /// <summary>プレイヤー</summary>
         [SerializeField] protected GameObject m_player;
+
+        /// <summary>ラグドール</summary>
+        [SerializeField] private GameObject m_ragdoll;
+        /// <summary>ルートボーン</summary>
+        [SerializeField] private Transform m_rootBone;
+
         /// <summary>巡回地点</summary>
         [SerializeField] Transform[] m_patrolPoints;
         /// <summary>現在の巡回地点のインデックス</summary>
@@ -100,6 +106,14 @@ namespace FPS
             }
         }
 
+        private void OnDead()
+        {
+            m_ragdoll.transform.position = transform.position;
+            m_ragdoll.SetActive(true);
+            this.gameObject.SetActive(false);
+            m_ragdoll.GetComponent<EnemyRagdoll>().RagdollSetup(m_rootBone);
+        }
+
         /// <summary>
         /// ダメージを受ける
         /// </summary>
@@ -126,7 +140,8 @@ namespace FPS
 
             if (m_currentHP <= 0)
             {
-                Destroy(gameObject);
+                OnDead();
+                //Destroy(gameObject);
                 Debug.Log("敵を倒した");
             }
         }
