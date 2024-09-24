@@ -38,6 +38,9 @@ namespace FPS
         /// <summary>射撃の着弾地点のエフェクト</summary>
         [SerializeField] ParticleSystem m_hitSpark;
 
+        /// <summary>プレイヤーのダメージエフェクト</summary>
+        [SerializeField] GameObject m_damageEffect;
+
         /// <summary>キャラクターのアニメーション</summary>
         [SerializeField] Animator m_anim;
 
@@ -60,6 +63,8 @@ namespace FPS
 
         /// <summary>ラインを消すコルーチン</summary>
         private Coroutine m_clearLine;
+        /// <summary>ダメージエフェクトを再生するコルーチン</summary>
+        private Coroutine m_playDamageEffect;
 
         /// <summary>プレイヤーが歩いているかどうか</summary>
         private bool m_isWalking = false;
@@ -137,7 +142,7 @@ namespace FPS
         /// <param name="collision"></param>
         private void OnCollisionEnter(Collision collision)
         {
-            if(!m_isGround)
+            if (!m_isGround)
             {
                 if (collision.gameObject.tag == "Ground")
                 {
@@ -157,6 +162,7 @@ namespace FPS
                 if (other.transform.root.gameObject.TryGetComponent<EnemyBase>(out var enemy))
                 {
                     m_status.TakeDamege(enemy.GetEnemyData().GetPower());
+                    m_playDamageEffect = StartCoroutine(PlayDamageEffect());
                 }
             }
         }
@@ -273,6 +279,15 @@ namespace FPS
             m_lineRenderer.SetPosition(1, Vector3.zero);
 
             StopCoroutine(m_clearLine);
+        }
+
+        private IEnumerator PlayDamageEffect()
+        {
+            m_damageEffect.SetActive(true);
+
+            yield return new WaitForSeconds(0.1f);
+
+            m_damageEffect.SetActive(false);
         }
 
         /// <summary>

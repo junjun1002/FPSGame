@@ -33,7 +33,7 @@ namespace FPS
             get => m_currentBulletCount;
             set
             {
-                // Blockの数が変わったらイベントを実行
+                // 弾数が変わったらイベントを実行
                 if (m_currentBulletCount != value)
                 {
                     m_currentBulletCount = value;
