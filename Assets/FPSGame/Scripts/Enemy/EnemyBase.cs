@@ -172,9 +172,12 @@ namespace FPS
 
         /// <summary>
         /// 滑らかにターゲットの方向を向くように
-        /// </summary>
+        /// </summary>animatorm_
         public void LookAtPlayer()
         {
+            AnimatorStateInfo stateInfo = m_anim.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName("Punch")) return;
+
             // ターゲット方向のベクトルを取得
             Vector3 relativePos = m_player.transform.position - this.transform.position;
             // 方向を、回転情報に変換
