@@ -63,9 +63,7 @@ namespace FPS
                     // 攻撃アニメーションが再生中なら、アニメーションが終了するまで待つ
                     if (m_isAttacking)
                     {
-                        Debug.Log("アニメションの再生が終わってからパトロールステートに遷移");
                         yield return new WaitUntil(() => !m_isAttacking);
-                        Debug.Log("アニメションの再生終了");
                     }
                     owner.GetEnemyState().stateMachine.ChangeMachine(owner.GetEnemyState().PatrolState);
                 }
