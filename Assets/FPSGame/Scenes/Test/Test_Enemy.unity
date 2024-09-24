@@ -3641,6 +3641,21 @@ PrefabInstance:
       propertyPath: m_bulletCountText
       value: 
       objectReference: {fileID: 1687449110}
+    - target: {fileID: 8764686863304409275, guid: bb1ac30f005afa14b9c24a3f59b68019,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.004
+      objectReference: {fileID: 0}
+    - target: {fileID: 8764686863304409275, guid: bb1ac30f005afa14b9c24a3f59b68019,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.584
+      objectReference: {fileID: 0}
+    - target: {fileID: 8764686863304409275, guid: bb1ac30f005afa14b9c24a3f59b68019,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8955270194845155689, guid: bb1ac30f005afa14b9c24a3f59b68019,
         type: 3}
       propertyPath: m_Name
@@ -3695,6 +3710,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0.063
+      objectReference: {fileID: 0}
+    - target: {fileID: 9173630789610353365, guid: bb1ac30f005afa14b9c24a3f59b68019,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
