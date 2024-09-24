@@ -1692,6 +1692,7 @@ MonoBehaviour:
   m_muzzle: {fileID: 804758910171846483}
   m_muzzleFlash: {fileID: 0}
   m_hitSpark: {fileID: 0}
+  m_damageEffect: {fileID: 0}
   m_anim: {fileID: 7026007178585226555}
   m_sensitivity: 0.1
 --- !u!114 &961111755419610129

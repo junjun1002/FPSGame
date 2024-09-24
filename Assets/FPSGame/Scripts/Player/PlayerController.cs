@@ -281,6 +281,10 @@ namespace FPS
             StopCoroutine(m_clearLine);
         }
 
+        /// <summary>
+        /// ダメージエフェクトを再生する
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator PlayDamageEffect()
         {
             m_damageEffect.SetActive(true);
@@ -359,6 +363,7 @@ namespace FPS
             {
                 m_rb.AddForce(Vector3.up * m_status.GetPlayerStatusData().GetJumpForce(), ForceMode.Impulse);
                 m_isGround = false;
+                m_anim.SetTrigger("Jump");
             }
         }
 
@@ -419,6 +424,12 @@ namespace FPS
                 m_camera.transform.position = m_anim.GetBoneTransform(HumanBodyBones.Head).position;
                 m_camera.transform.rotation = Quaternion.LookRotation(-m_anim.GetBoneTransform(HumanBodyBones.Head).up);
                 return;
+            }
+            else if(stateInfo.IsName("Jump"))
+            {
+                m_gun.transform.position = m_anim.GetBoneTransform(HumanBodyBones.RightHand).position;
+                // 銃の回転をカメラの中央に合わせる
+                m_gun.transform.rotation = Quaternion.LookRotation(ikTarget - m_muzzle.transform.position);
             }
 
             // 右手のIKを設定

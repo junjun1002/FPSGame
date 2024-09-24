@@ -3626,11 +3626,6 @@ PrefabInstance:
       propertyPath: m_damageEffect
       value: 
       objectReference: {fileID: 477728202}
-    - target: {fileID: 761990819141554364, guid: bb1ac30f005afa14b9c24a3f59b68019,
-        type: 3}
-      propertyPath: m_damegeEffect
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 961111755419610129, guid: bb1ac30f005afa14b9c24a3f59b68019,
         type: 3}
       propertyPath: m_hpBar
